@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ListaVisualizzazioneFragment">
+
+    <EditText
+        android:id="@+id/ricerca"
+        android:layout_marginTop="0dp"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:inputType="text"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:background="@drawable/edittext"
+        android:drawableStart="@drawable/ic_search"
+        android:hint=" Ricerca"
+        android:textColorHint="#FFFFFF"
+        />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:scrollbars="vertical"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:dividerHeight="3dp"
+        android:divider="@color/browser_actions_bg_grey"
+        />
+
+    <FrameLayout
+        android:id="@+id/visualizzaCocktailFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

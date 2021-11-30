@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "224683720355",
+    "project_id": "newbie-bartender",
+    "storage_bucket": "newbie-bartender.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224683720355:android:a30c0bdbac12b0790c0916",
+        "android_client_info": {
+          "package_name": "com.example.newbiebartender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224683720355-ha30frgqff7uj01eb6qgr42sh7rlqm2c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newbiebartender",
+            "certificate_hash": "8ceb9b539b5ed1e68e2822c09216a57b3881a640"
+          }
+        },
+        {
+          "client_id": "224683720355-ejpre5lp2fdfu6mj3dvrc20rqim6kr7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXkrzwLLux_TLgiLHNgUIZroWUrtJo-kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224683720355-ejpre5lp2fdfu6mj3dvrc20rqim6kr7c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

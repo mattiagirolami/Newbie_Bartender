@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Newbie Bartender</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="dosi">
+        <item>1 persona</item>
+        <item>4 persone</item>
+        <item>8 persone</item>
+        <item>10 persone</item>
+    </string-array>
+
+    <string-array name="difficolta">
+        <item>Bassa</item>
+        <item>Media</item>
+        <item>Alta</item>
+    </string-array>
+
+    <string-array name="costo">
+        <item>Basso</item>
+        <item>Medio</item>
+        <item>Alto</item>
+    </string-array>
+
+</resources>

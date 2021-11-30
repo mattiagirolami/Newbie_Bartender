@@ -137,7 +137,7 @@
     </Button>
 
     <TextView
-        android:id="@+id/back_to_login_textView"
+        android:id="@+id/backToLoginTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

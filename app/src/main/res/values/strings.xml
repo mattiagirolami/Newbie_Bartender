@@ -2,6 +2,7 @@
     <string name="app_name">Newbie Bartender</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="non_sei_registrato_registrati_ora">Non sei registrato?<b> Registrati ora!</b></string>
 
     <string-array name="dosi">
         <item>1 persona</item>

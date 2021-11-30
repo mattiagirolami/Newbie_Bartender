@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="Non sei registrato? Registrati ora!"
+        android:text="@string/non_sei_registrato_registrati_ora"
         android:textColor="@color/black"
         android:textSize="15sp"/>
     <TextView

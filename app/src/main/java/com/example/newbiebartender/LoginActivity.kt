@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
-    //TODO: togliere progressbar dal layout
 
     private lateinit var binding: ActivityLoginBinding
     lateinit var session: LoginPref

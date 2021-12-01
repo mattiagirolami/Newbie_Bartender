@@ -47,9 +47,11 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_lista_visualizzazione, container, false)
+
         visualizzaTitoli = root.findViewById(R.id.listview)
         ricerca = root.findViewById(R.id.ricerca)
         db = FirebaseFirestore.getInstance()
+
         db!!.collection(tipoCocktail!!).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 for (doc in task.result!!) {
@@ -71,6 +73,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
                 idRicetta = idL[position]
                 openFragment(idRicetta, tipoCocktail)
             }
+
         ricerca!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -119,13 +122,14 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
             val view = View.inflate(getContext(), R.layout.textviewlist, null)
-            val titoloRicetta = view.findViewById<TextView>(R.id.titoloricetta)
-            titoloRicetta.text = titoli[position]
+            val titoloCocktail = view.findViewById<TextView>(R.id.titoloCocktail)
+            titoloCocktail.text = titoli[position]
             return view
         }
 
         override fun getFilter(): Filter {
             return object : Filter() {
+
                 override fun performFiltering(constraint: CharSequence): FilterResults {
                     val results = FilterResults()
                     if (constraint.isEmpty()) {
@@ -171,10 +175,10 @@ open class ListaVisualizzazioneFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(tipoPiatto: String?): ListaVisualizzazioneFragment {
+        fun newInstance(tipoCocktail: String?): ListaVisualizzazioneFragment {
             val fragment = ListaVisualizzazioneFragment()
             val args = Bundle()
-            args.putString("tipoPiatto", tipoPiatto)
+            args.putString("tipoCocktail", tipoCocktail)
             fragment.arguments = args
             return fragment
         }

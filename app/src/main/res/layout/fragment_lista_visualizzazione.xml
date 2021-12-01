@@ -33,11 +33,12 @@
         android:padding="5dp"
         android:dividerHeight="3dp"
         android:divider="@color/browser_actions_bg_grey"
-        />
+        >
 
-    <FrameLayout
-        android:id="@+id/visualizzaCocktailFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/visualizzaCocktailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </ListView>
 
 </RelativeLayout>

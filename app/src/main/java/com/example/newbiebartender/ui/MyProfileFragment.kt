@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,9 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.newbiebartender.BuildConfig
 import com.example.newbiebartender.LoginActivity
 import com.example.newbiebartender.LoginPref
 import com.example.newbiebartender.R
@@ -28,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
-import java.util.jar.Manifest
 
 class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteractionListener {
 
@@ -47,6 +47,8 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
     lateinit var session : LoginPref
 
     private var storageReference: StorageReference ?= null
+    //TODO: vedere se mettere viewBinding https://developer.android.com/topic/libraries/view-binding
+    // private lateinit var binding:
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_my_profile,container, false)
@@ -64,6 +66,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
+
         db!!.collection("users")
             .get()
             .addOnCompleteListener { task ->
@@ -88,15 +91,18 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 }
             }
 
-        bottonelogout!!.setOnClickListener (View.OnClickListener {
+        bottonelogout!!.setOnClickListener ({
             val mAuth = FirebaseAuth.getInstance()
             mAuth.signOut()
             session.logoutUser()
             startActivity(Intent(context, LoginActivity::class.java))
             Toast.makeText(context, "Logout effettuato", Toast.LENGTH_SHORT).show()
         })
+
         modificaImmagine!!.setOnClickListener { cambiaImmagine() }
+
         scattaImmagine!!.setOnClickListener { chiediPermessiFotocamera() }
+
         modificaPassword!!.setOnClickListener { v ->
             val resetPassword = EditText(v.context)
             val passwordreset = AlertDialog.Builder(v.context)
@@ -168,7 +174,9 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
             caricaImmagine()
         }
         if (requestCode == CAMERA_PERM_CODE) {
-            assert(data != null)
+            if (BuildConfig.DEBUG && data == null) {
+                error("Assertion failed")
+            }
             val image = data!!.extras!!["data"] as Bitmap?
             fotoprofilo!!.setImageBitmap(image)
             uploadImageToFirebase(image)
@@ -176,13 +184,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
     }
 
     private fun uploadImageToFirebase(image: Bitmap?) {
-        var image = image
+        var images = image
         val imageReference = storageReference!!.child("images/$id.jpg")
         fotoprofilo!!.isDrawingCacheEnabled = true
         fotoprofilo!!.buildDrawingCache()
-        image = (fotoprofilo!!.drawable as BitmapDrawable).bitmap
+        images = (fotoprofilo!!.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        images.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         val uploadTask = imageReference.putBytes(data)
         uploadTask.addOnFailureListener { Toast.makeText(context, "Immagine non modificata", Toast.LENGTH_SHORT).show() }

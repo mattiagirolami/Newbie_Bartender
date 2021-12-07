@@ -13,6 +13,7 @@
         <action
             android:id="@+id/action_navigation_homepage_to_listaVisualizzazione_frag"
             app:destination="@id/listaVisualizzazione_frag" />
+
     </fragment>
 
     <fragment

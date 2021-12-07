@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.newbiebartender.ListaVisualizzazioneFragment
 import com.example.newbiebartender.R
 
@@ -20,11 +21,16 @@ class HomePageFragment : Fragment() {
         analcolici = root.findViewById(R.id.analcolicoCard)
         alcolici = root.findViewById(R.id.alcoliciCard)
         analcolici!!.setOnClickListener { openFragment("analcolici") }
+        //analcolici!!.setOnClickListener {Navigation.findNavController(requireView()).navigate(R.id.listaVisualizzazioneanalcolici_frag)}
         alcolici!!.setOnClickListener { openFragment("alcolici") }
-
-
         return root
     }
+
+    /*
+    override fun onClick(view: View){
+        Navigation.findNavController(view).navigate(R.id.listaVisualizzazioneanalcolici_frag)
+    }
+     */
 
     private fun openFragment(tipoCocktail: String?) {
         //TODO: tipoCocktail non viene passato (vedere arguments su internet)
@@ -34,4 +40,5 @@ class HomePageFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.add(R.id.listaVisualizzazione, fragment, "LISTAVISUALIZZAZIONE FRAGMENT").commit()
     }
+
 }

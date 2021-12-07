@@ -37,6 +37,13 @@ open class ListaVisualizzazioneFragment : Fragment() {
     var id: String? = null
     var idRecipe: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(arguments!=null){
+            tipoCocktail = requireArguments().getString("tipoCocktail")
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_lista_visualizzazione, container, false)
 
@@ -76,7 +83,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
     private fun openFragment(idRecipe: String?, tipoCocktail: String?) {
 
-        val fragment: VisualizzaRicettaFragment = VisualizzaRicettaFragment.newInstance(id, tipoCocktail)
+        val fragment: VisualizzaRicettaFragment = VisualizzaRicettaFragment.newInstance(idRecipe, tipoCocktail)
         val fragmentManager = requireActivity().supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
         transaction.addToBackStack(null)
@@ -84,6 +91,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
+        //fun OnFragmentInteractionListener(backText: String?)
     }
 
     inner class ListAdapter(var context: Context?) : BaseAdapter(), Filterable {

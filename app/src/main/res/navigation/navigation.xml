@@ -9,7 +9,11 @@
         android:id="@+id/navigation_homepage"
         android:name="com.example.newbiebartender.ui.HomePageFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home_page"/>
+        tools:layout="@layout/fragment_home_page">
+        <action
+            android:id="@+id/action_navigation_homepage_to_listaVisualizzazione_frag"
+            app:destination="@id/listaVisualizzazione_frag" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add"
@@ -22,5 +26,21 @@
         android:name="com.example.newbiebartender.ui.MyProfileFragment"
         android:label="Profilo"
         tools:layout="@layout/fragment_my_profile" />
+
+    <fragment
+        android:id="@+id/listaVisualizzazione_frag"
+        android:name="com.example.newbiebartender.ListaVisualizzazioneFragment"
+        android:label="Lista"
+        tools:layout="@layout/fragment_lista_visualizzazione" >
+        <action
+            android:id="@+id/action_listaVisualizzazione_frag_to_visualizzaRicettaCocktail_frag"
+            app:destination="@id/visualizzaRicettaCocktail_frag" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/visualizzaRicettaCocktail_frag"
+        android:name="com.example.newbiebartender.ui.VisualizzaRicettaFragment"
+        android:label="Recipe"
+        tools:layout="@layout/fragment_visualizza_ricetta"/>
 
 </navigation>

@@ -14,8 +14,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
@@ -32,7 +30,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     var scrollView: ScrollView? = null
 
     //TODO: controllare questo problema
-    override var titolo: TextView?  = null
+    var titolo: String? = null
 
     var difficolta: TextView? = null
     var costo: TextView? = null
@@ -44,7 +42,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     var ingredienti: ListView? = null
     var tornaIndietro: ImageButton? = null
 
-    override var idRicetta: String? = null
+    var idRicetta: String? = null
     override var tipoCocktail: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,16 +69,21 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
+
         docref = db!!.collection(tipoCocktail!!).document(idRicetta!!)
-        docref!!.get().addOnCompleteListener { task ->
+
+        docref!!
+                .get()
+                .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val document = task.result
                 if (document!!.exists()) {
-                    titolo!!.text = document["titolo"].toString()
+                    titolo = document["titolo"].toString()
                     costo!!.text = document["costo"].toString()
                     dosi!!.text = document["dosi"].toString()
                     difficolta!!.text = document["difficoltà"].toString()
                     tempo!!.text = document["tempo"].toString()
+
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
                         Glide.with(requireContext()).load(imageUrl).into(fotodrink!!)

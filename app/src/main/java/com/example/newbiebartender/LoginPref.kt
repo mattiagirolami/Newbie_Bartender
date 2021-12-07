@@ -6,9 +6,9 @@ import android.content.SharedPreferences
 
 class LoginPref {
 
-    lateinit var pref: SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
-    lateinit var con: Context
+    var pref: SharedPreferences
+    var editor: SharedPreferences.Editor
+    var con: Context
     var PRIVATEMODE : Int = 0
 
     constructor(con:Context){
@@ -18,10 +18,10 @@ class LoginPref {
     }
 
     companion object{
-        val PREF_NAME = "Login Preference"
-        val IS_LOGIN = "isLoggedIn"
-        val KEY_EMAIL = "username"
-        val KEY_PASSWORD = "password"
+        const val PREF_NAME = "Login Preference"
+        const val IS_LOGIN = "isLoggedIn"
+        const val KEY_EMAIL = "username"
+        const val KEY_PASSWORD = "password"
     }
 
     fun createLoginSession(email: String, password: String){
@@ -33,7 +33,7 @@ class LoginPref {
 
     fun checkLogin(){
         if(!this.isLoggedIn()){
-            var i: Intent = Intent(con, LoginActivity::class.java)
+            val i: Intent = Intent(con, LoginActivity::class.java)
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             con.startActivity(i)
@@ -41,16 +41,16 @@ class LoginPref {
     }
 
     fun getUserDetails(): HashMap<String, String>{
-        var user: Map<String, String> = HashMap<String, String>()
-        (user as HashMap).put(KEY_EMAIL, pref.getString(KEY_EMAIL, null)!!)
-        (user as HashMap).put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null)!!)
+        val user: Map<String, String> = HashMap()
+        (user as HashMap)[KEY_EMAIL] = pref.getString(KEY_EMAIL, null)!!
+        user[KEY_PASSWORD] = pref.getString(KEY_PASSWORD, null)!!
         return user
     }
 
     fun logoutUser(){
         editor.clear()
         editor.commit()
-        var i: Intent = Intent(con, LoginActivity::class.java)
+        val i = Intent(con, LoginActivity::class.java)
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         con.startActivity(i)

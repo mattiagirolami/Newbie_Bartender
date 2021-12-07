@@ -26,7 +26,8 @@ class HomePageFragment : Fragment() {
         return root
     }
 
-    private fun openFragment(tipoCocktail: String) {
+    private fun openFragment(tipoCocktail: String?) {
+        //TODO: tipoCocktail non viene passato (vedere arguments su internet)
         val fragment: ListaVisualizzazioneFragment = ListaVisualizzazioneFragment.newInstance(tipoCocktail)
         val fragmentManager = requireActivity().supportFragmentManager
         val transaction = fragmentManager.beginTransaction()

@@ -75,10 +75,10 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                         val user = FirebaseAuth.getInstance().currentUser
                         if (user!!.email == document.id) {
                             id = document.id
-                            //email.setText(document.id)
-                            email!!.text = document.id
-                            //nomeutente.setText(document["username"].toString())
-                            nomeutente!!.text = document["username"].toString()
+                            email!!.setText(document.id)
+                            //email!!.text = document.id
+                            nomeutente!!.setText(document["username"].toString())
+                            //nomeutente!!.text = document["username"].toString()
                             storageReference!!.child("images/$id.jpg").downloadUrl
                                 .addOnSuccessListener { uri ->
                                     val imageUrl = uri.toString()
@@ -91,13 +91,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 }
             }
 
-        bottonelogout!!.setOnClickListener ({
+        bottonelogout!!.setOnClickListener {
             val mAuth = FirebaseAuth.getInstance()
             mAuth.signOut()
             session.logoutUser()
             startActivity(Intent(context, LoginActivity::class.java))
             Toast.makeText(context, "Logout effettuato", Toast.LENGTH_SHORT).show()
-        })
+        }
 
         modificaImmagine!!.setOnClickListener { cambiaImmagine() }
 

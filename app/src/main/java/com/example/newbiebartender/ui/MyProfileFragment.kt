@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -44,6 +45,8 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
     var email: TextView? = null
     var id: String? = null
 
+    private var toolbar_logout : Toolbar ?= null
+
     lateinit var session : LoginPref
 
     private var storageReference: StorageReference ?= null
@@ -59,13 +62,16 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         fotoprofilo = root.findViewById(R.id.fotoprofilo)
         modificaImmagine = root.findViewById(R.id.bottonemodifica)
         scattaImmagine = root.findViewById(R.id.scattafoto)
-        bottonelogout = root.findViewById(R.id.bottonelogout)
+        //bottonelogout = root.findViewById(R.id.bottonelogout)
         nomeutente = root.findViewById(R.id.nomeutente)
         email = root.findViewById(R.id.email)
         modificaPassword = root.findViewById(R.id.modifica_password)
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
+
+        toolbar_logout = root.findViewById(R.id.toolbar_profile)
+        var tool_log = toolbar_logout!!.menu.getItem(0)
 
         db!!.collection("users")
             .get()
@@ -75,10 +81,10 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                         val user = FirebaseAuth.getInstance().currentUser
                         if (user!!.email == document.id) {
                             id = document.id
-                            email!!.setText(document.id)
-                            //email!!.text = document.id
-                            nomeutente!!.setText(document["username"].toString())
-                            //nomeutente!!.text = document["username"].toString()
+                            //email!!.setText(document.id)
+                            email!!.text = document.id
+                            //nomeutente!!.setText(document["username"].toString())
+                            nomeutente!!.text = document["username"].toString()
                             storageReference!!.child("images/$id.jpg").downloadUrl
                                 .addOnSuccessListener { uri ->
                                     val imageUrl = uri.toString()
@@ -91,12 +97,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 }
             }
 
-        bottonelogout!!.setOnClickListener {
+        tool_log!!.setOnMenuItemClickListener() {
             val mAuth = FirebaseAuth.getInstance()
             mAuth.signOut()
             session.logoutUser()
             startActivity(Intent(context, LoginActivity::class.java))
             Toast.makeText(context, "Logout effettuato", Toast.LENGTH_SHORT).show()
+            true
         }
 
         modificaImmagine!!.setOnClickListener { cambiaImmagine() }

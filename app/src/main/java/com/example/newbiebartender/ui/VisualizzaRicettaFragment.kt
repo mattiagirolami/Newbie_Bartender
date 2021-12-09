@@ -19,7 +19,6 @@ import com.google.firebase.storage.StorageReference
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     private var storageReference: StorageReference ?= null
-    //private var ingredientiL: List<String>? = ArrayList()
     private var ingredientiL: List<String>? = ArrayList()
     private var descrizioneL: List<String> = ArrayList()
     private val mListener: OnFragmentInteractionListener? = null

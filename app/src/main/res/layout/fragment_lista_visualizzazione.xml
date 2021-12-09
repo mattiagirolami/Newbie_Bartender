@@ -10,7 +10,7 @@
     <EditText
         android:id="@+id/ricerca"
         android:layout_marginTop="0dp"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_horizontal"
         android:padding="5dp"
@@ -20,10 +20,20 @@
         android:background="@drawable/edittext"
         android:drawableStart="@drawable/ic_search"
         android:hint=" Ricerca"
-        android:textColorHint="#FFFFFF"
-        />
+        android:textColorHint="#FFFFFF" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:scrollbars="vertical"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:dividerHeight="3dp"
+        android:divider="@color/black"/>
+
+    <!--ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,27 +42,7 @@
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:dividerHeight="3dp"
-        android:divider="@color/browser_actions_bg_grey"
-        >
-        <!--
-        <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:scrollbars="vertical"
-        android:gravity="center_horizontal"
-        android:padding="5dp"
-        android:dividerHeight="3dp"
-        android:divider="@color/browser_actions_bg_grey"
-        >
-        -->
+        android:divider="@color/black" /-->
 
-    </ListView>
-
-    <FrameLayout
-        android:id="@+id/visualizzaCocktailFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>

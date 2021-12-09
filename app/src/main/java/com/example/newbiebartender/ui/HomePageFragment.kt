@@ -20,9 +20,9 @@ class HomePageFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home_page, container, false)
         analcolici = root.findViewById(R.id.analcolicoCard)
         alcolici = root.findViewById(R.id.alcoliciCard)
-        analcolici!!.setOnClickListener { openFragment("analcolici") }
+        //analcolici!!.setOnClickListener { openFragment("analcolico") }
         //analcolici!!.setOnClickListener {Navigation.findNavController(requireView()).navigate(R.id.listaVisualizzazioneanalcolici_frag)}
-        alcolici!!.setOnClickListener { openFragment("alcolici") }
+        //alcolici!!.setOnClickListener { openFragment("alcolico") }
         return root
     }
 
@@ -30,7 +30,7 @@ class HomePageFragment : Fragment() {
     override fun onClick(view: View){
         Navigation.findNavController(view).navigate(R.id.listaVisualizzazioneanalcolici_frag)
     }
-     */
+
 
     private fun openFragment(tipoCocktail: String?) {
         //TODO: tipoCocktail non viene passato (vedere arguments su internet)
@@ -40,5 +40,7 @@ class HomePageFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.add(R.id.listaVisualizzazione, fragment, "LISTAVISUALIZZAZIONE FRAGMENT").commit()
     }
+
+     */
 
 }

@@ -1,5 +1,5 @@
 package com.example.newbiebartender.ui
-/*
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,15 +22,16 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     //private var ingredientiL: List<String>? = ArrayList()
     private var ingredientiL: List<String>? = ArrayList()
     private var descrizioneL: List<String> = ArrayList()
-    //private val mListener: OnFragmentInteractionListener? = null
+    private val mListener: OnFragmentInteractionListener? = null
     var adapterIngredienti: ArrayAdapter<String>? = null
     var adapterDescrizione: ArrayAdapter<String>? = null
+
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
     var scrollView: ScrollView? = null
 
     //TODO: controllare questo problema
-    override var titolo: String? = null
+    var titoloS: TextView? = null
 
     var difficolta: TextView? = null
     var costo: TextView? = null
@@ -75,35 +76,36 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         docref!!
                 .get()
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val document = task.result
-                        if (document!!.exists()) {
-                            titolo = document["titolo"].toString()
-                            costo!!.text = document["costo"].toString()
-                            dosi!!.text = document["dosi"].toString()
-                            difficolta!!.text = document["difficoltà"].toString()
-                            tempo!!.text = document["tempo"].toString()
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document!!.exists()) {
+                    //titolo = document["titolo"].toString()
+                    titoloS = document["titolo"] as TextView?
+                        costo!!.text = document["costo"].toString()
+                    dosi!!.text = document["dosi"].toString()
+                    difficolta!!.text = document["difficoltà"].toString()
+                    tempo!!.text = document["tempo"].toString()
 
-                            storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
-                                val imageUrl = uri.toString()
-                                Glide.with(requireContext()).load(imageUrl).into(fotodrink!!)
-                            }
-                            //TODO: risolvere questo problema
-                            ingredientiL = (document["ingredienti"] as List<String>?)!!
-                            adapterIngredienti = ArrayAdapter(requireContext(),
-                                    android.R.layout.simple_list_item_1,
-                                    ingredientiL!!)
-                            ingredienti!!.adapter = adapterIngredienti
-                            adapterIngredienti!!.notifyDataSetChanged()
-                            descrizioneL = (document["descrizione"] as List<String>?)!!
-                            adapterDescrizione = ArrayAdapter(requireContext(),
-                                    android.R.layout.simple_list_item_1,
-                                    descrizioneL)
-                            descrizione!!.adapter = adapterDescrizione
-                            adapterDescrizione!!.notifyDataSetChanged()
-                        }
+                    storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+                        Glide.with(requireContext()).load(imageUrl).into(fotodrink!!)
                     }
+                    //TODO: risolvere questo problema
+                    ingredientiL = (document["ingredienti"] as List<String>?)!!
+                    adapterIngredienti = ArrayAdapter(requireContext(),
+                            android.R.layout.simple_list_item_1,
+                            ingredientiL!!)
+                    ingredienti!!.adapter = adapterIngredienti
+                    adapterIngredienti!!.notifyDataSetChanged()
+                    descrizioneL = (document["descrizione"] as List<String>?)!!
+                    adapterDescrizione = ArrayAdapter(requireContext(),
+                            android.R.layout.simple_list_item_1,
+                            descrizioneL)
+                    descrizione!!.adapter = adapterDescrizione
+                    adapterDescrizione!!.notifyDataSetChanged()
                 }
+            }
+        }
         scrollView!!.fullScroll(ScrollView.FOCUS_DOWN)
         scrollView!!.fullScroll(ScrollView.FOCUS_UP)
         tornaIndietro!!.setOnClickListener {
@@ -125,5 +127,3 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         }
     }
 }
-
- */

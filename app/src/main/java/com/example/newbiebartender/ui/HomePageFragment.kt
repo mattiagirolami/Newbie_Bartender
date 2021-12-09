@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.example.newbiebartender.ListaVisualizzazioneFragment
 import com.example.newbiebartender.R
 
@@ -20,17 +19,17 @@ class HomePageFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home_page, container, false)
         analcolici = root.findViewById(R.id.analcolicoCard)
         alcolici = root.findViewById(R.id.alcoliciCard)
-        //analcolici!!.setOnClickListener { openFragment("analcolico") }
+        analcolici!!.setOnClickListener { openFragment("analcolico") }
         //analcolici!!.setOnClickListener {Navigation.findNavController(requireView()).navigate(R.id.listaVisualizzazioneanalcolici_frag)}
-        //alcolici!!.setOnClickListener { openFragment("alcolico") }
+        alcolici!!.setOnClickListener { openFragment("alcolico") }
         return root
     }
 
+
     /*
     override fun onClick(view: View){
-        Navigation.findNavController(view).navigate(R.id.listaVisualizzazioneanalcolici_frag)
-    }
-
+        Navigation.findNavController(view).navigate(R.id.visualizzaCocktailFragment)
+    }*/
 
     private fun openFragment(tipoCocktail: String?) {
         //TODO: tipoCocktail non viene passato (vedere arguments su internet)
@@ -40,7 +39,5 @@ class HomePageFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.add(R.id.listaVisualizzazione, fragment, "LISTAVISUALIZZAZIONE FRAGMENT").commit()
     }
-
-     */
 
 }

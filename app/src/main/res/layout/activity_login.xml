@@ -24,6 +24,7 @@
         android:layout_marginTop="5dp"
         android:textColorHint="@color/black"
         app:startIconDrawable="@drawable/ic_email"
+        app:startIconTint="@color/black"
         app:errorEnabled="true"
         app:errorTextColor="@color/errore">
 
@@ -33,10 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-
-        android:drawableStart="@drawable/ic_email"
+        android:background="@color/white"
         android:ems="10"
-        android:hint="E-mail"
+        android:hint="Email"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,7 +52,9 @@
         android:layout_marginTop="5dp"
         android:textColorHint="@color/black"
         app:startIconDrawable="@drawable/ic_key"
+        app:startIconTint="@color/black"
         app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/black"
         app:errorEnabled="true"
         app:errorTextColor="@color/errore">
 
@@ -59,9 +63,11 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@color/white"
         android:drawableStart="@drawable/ic_key"
         android:inputType="textPassword"
         android:textStyle="normal"
+        android:textColor="@color/black"
         android:hint=" Password"/>
 
     </com.google.android.material.textfield.TextInputLayout>

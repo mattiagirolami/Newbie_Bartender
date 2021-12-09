@@ -65,19 +65,19 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.passwordEdittextLogin.text.toString().trim()
 
         if (email.isEmpty()) {
-            binding.emailEdittextLogin.error = "Inserisci l'email."
+            binding.emailEdittextLoginLayout.error = "Inserisci l'email."
             return
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            binding.emailEdittextLogin.error = "Il formato è errato."
+            binding.emailEdittextLoginLayout.error = "Il formato è errato."
             return
         }
-        else if (password.isEmpty()) {
-            binding.passwordEdittextLogin.error = "Inserisci la password."
+        if (password.isEmpty()) {
+            binding.passwordEdittextLoginLayout.error = "Inserisci la password."
             return
         }
         else if (password.length < 6) {
-            binding.passwordEdittextLogin.error = "Inserisci una password di 6 caratteri/numeri."
+            binding.passwordEdittextLoginLayout.error = "Inserisci una password di 6 caratteri/numeri."
             return
         }
 

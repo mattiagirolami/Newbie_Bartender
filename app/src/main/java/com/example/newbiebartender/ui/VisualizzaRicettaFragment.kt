@@ -25,12 +25,13 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     private val mListener: OnFragmentInteractionListener? = null
     var adapterIngredienti: ArrayAdapter<String>? = null
     var adapterDescrizione: ArrayAdapter<String>? = null
+
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
     var scrollView: ScrollView? = null
 
     //TODO: controllare questo problema
-    var titolo: String? = null
+    var titoloS: TextView? = null
 
     var difficolta: TextView? = null
     var costo: TextView? = null
@@ -78,8 +79,9 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             if (task.isSuccessful) {
                 val document = task.result
                 if (document!!.exists()) {
-                    titolo = document["titolo"].toString()
-                    costo!!.text = document["costo"].toString()
+                    //titolo = document["titolo"].toString()
+                    titoloS = document["titolo"] as TextView?
+                        costo!!.text = document["costo"].toString()
                     dosi!!.text = document["dosi"].toString()
                     difficolta!!.text = document["difficoltà"].toString()
                     tempo!!.text = document["tempo"].toString()

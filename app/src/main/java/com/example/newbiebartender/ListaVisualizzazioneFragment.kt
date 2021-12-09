@@ -32,7 +32,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
     var ricerca: EditText? = null
     open var tipoCocktail: String? = null
 
-    open var titoloTW: TextView? = null
+    var titolo: String? = null
 
     var id: String? = null
     var idRecipe: String? = null
@@ -51,12 +51,13 @@ open class ListaVisualizzazioneFragment : Fragment() {
         ricerca = root.findViewById(R.id.ricerca)
         db = FirebaseFirestore.getInstance()
 
-        db!!.collection(tipoCocktail!!).get().addOnCompleteListener { task ->
+        db!!.collection(tipoCocktail!!)
+            .get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 for (doc in task.result!!) {
-                    titoloTW!!.text = doc["titolo"] as String?
+                    titolo = doc["titolo"] as String?
                     id = doc.id
-                    titoli.add(titoloTW!!.text as String)
+                    titoli.add(titolo!!)
                     idL.add(id!!)
                 }
                 visualizzaTitoli!!.adapter = listAdapter

@@ -14,9 +14,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide
 import com.example.newbiebartender.BuildConfig
 import com.example.newbiebartender.LoginActivity
 import com.example.newbiebartender.LoginPref
-import com.example.newbiebartender.R
+import com.example.newbiebartender.databinding.FragmentMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -32,46 +32,33 @@ import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
 
 class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteractionListener {
+    
+    private var _binding : FragmentMyProfileBinding? = null
+    private val binding get() = _binding!!
 
     var db: FirebaseFirestore ?= null
     var storage: FirebaseStorage?= null
     var imageUri: Uri? = null
-    var fotoprofilo: ImageView? = null
-    var modificaPassword: Button? = null
-    var modificaImmagine: ImageButton? = null
-    var bottonelogout: ImageButton? = null
-    var scattaImmagine: ImageButton? = null
-    var nomeutente: TextView? = null
-    var email: TextView? = null
     var id: String? = null
-
-    private var toolbar_logout : Toolbar ?= null
 
     lateinit var session : LoginPref
 
     private var storageReference: StorageReference ?= null
-    //TODO: vedere se mettere viewBinding https://developer.android.com/topic/libraries/view-binding
-    // private lateinit var binding:
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_my_profile,container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         session = LoginPref(this.requireContext())
         session.checkLogin()
 
-        fotoprofilo = root.findViewById(R.id.fotoprofilo)
-        modificaImmagine = root.findViewById(R.id.bottonemodifica)
-        scattaImmagine = root.findViewById(R.id.scattafoto)
-        //bottonelogout = root.findViewById(R.id.bottonelogout)
-        nomeutente = root.findViewById(R.id.nomeutente)
-        email = root.findViewById(R.id.email)
-        modificaPassword = root.findViewById(R.id.modifica_password)
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
 
-        toolbar_logout = root.findViewById(R.id.toolbar_profile)
-        var tool_log = toolbar_logout!!.menu.getItem(0)
+        
+        val tool_log = binding.toolbarProfile.menu.getItem(0)
 
         db!!.collection("users")
             .get()
@@ -82,13 +69,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                         if (user!!.email == document.id) {
                             id = document.id
                             //email!!.setText(document.id)
-                            email!!.text = document.id
+                            binding.email.text = document.id
                             //nomeutente!!.setText(document["username"].toString())
-                            nomeutente!!.text = document["username"].toString()
+                            binding.nomeutente.text = document["username"].toString()
                             storageReference!!.child("images/$id.jpg").downloadUrl
                                 .addOnSuccessListener { uri ->
                                     val imageUrl = uri.toString()
-                                    context?.let { Glide.with(it).load(imageUrl).into(fotoprofilo!!) }
+                                    context?.let { Glide.with(it).load(imageUrl).into(binding.fotoprofilo) }
                                 }
                         }
                     }
@@ -106,11 +93,11 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
             true
         }
 
-        modificaImmagine!!.setOnClickListener { cambiaImmagine() }
+        binding.bottonemodifica.setOnClickListener { cambiaImmagine() }
 
-        scattaImmagine!!.setOnClickListener { chiediPermessiFotocamera() }
+        binding.scattafoto.setOnClickListener { chiediPermessiFotocamera() }
 
-        modificaPassword!!.setOnClickListener { v ->
+        binding.modificaPassword.setOnClickListener { v ->
             val resetPassword = EditText(v.context)
             val passwordreset = AlertDialog.Builder(v.context)
             passwordreset.setTitle("MODIFICA PASSWORD")
@@ -139,7 +126,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
             }
             passwordreset.create().show()
         }
-        return root
+        return view
     }
 
     private fun chiediPermessiFotocamera() {
@@ -177,7 +164,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             imageUri = data.data
-            fotoprofilo!!.setImageURI(imageUri)
+            binding.fotoprofilo.setImageURI(imageUri)
             caricaImmagine()
         }
         if (requestCode == CAMERA_PERM_CODE) {
@@ -185,7 +172,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 error("Assertion failed")
             }
             val image = data!!.extras!!["data"] as Bitmap?
-            fotoprofilo!!.setImageBitmap(image)
+            binding.fotoprofilo.setImageBitmap(image)
             uploadImageToFirebase(image)
         }
     }
@@ -193,9 +180,9 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
     private fun uploadImageToFirebase(image: Bitmap?) {
         var images = image
         val imageReference = storageReference!!.child("images/$id.jpg")
-        fotoprofilo!!.isDrawingCacheEnabled = true
-        fotoprofilo!!.buildDrawingCache()
-        images = (fotoprofilo!!.drawable as BitmapDrawable).bitmap
+        binding.fotoprofilo.isDrawingCacheEnabled = true
+        binding.fotoprofilo.buildDrawingCache()
+        images = (binding.fotoprofilo.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         images.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()

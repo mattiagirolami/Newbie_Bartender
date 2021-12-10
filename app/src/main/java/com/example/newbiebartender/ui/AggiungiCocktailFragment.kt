@@ -13,9 +13,7 @@ import android.widget.AdapterView.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.newbiebartender.Navigation
-import com.example.newbiebartender.R
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.example.newbiebartender.databinding.FragmentAggiungiCocktailBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -24,64 +22,47 @@ import kotlin.collections.ArrayList
 
 class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicker.OnScrollListener {
 
+
+    private  var _binding: FragmentAggiungiCocktailBinding? = null
+    private val binding get() = _binding!!
+
     var storage: FirebaseStorage?= null
     private var storageReference: StorageReference ?= null
     var ingredientiAl = ArrayList<String>()
     var adapter: ArrayAdapter<String> ?= null
     var descrizioneAl = java.util.ArrayList<String>()
     var adapter2: ArrayAdapter<String>? = null
-    //TODO: vedere se aggiungere qualcosa
     val tipologia = arrayOf("ANALCOLICO", "ALCOLICO")
     var id = GenerateRandomString.randomString(20)
-    var titolo: TextInputEditText? = null
-    var titoloL: TextInputLayout? = null
-    var inserisciImmagine: ImageButton? = null
-    var tornaIndietro: ImageButton? = null
     var imageUri: Uri? = null
-    var fotoCocktail: ImageView? = null
-    var aggiuntaIngrediente: Button? = null
-    var aggiuntaDescrizione: Button? = null
-    var salvaRicetta: Button? = null
-    var aggiungiIngrediente: ListView? = null
-    var aggiungiDescrizione: ListView? = null
     var difficolta: String? = null
     var costo: String? = null
     var tipo_drink: String? = null
     var dosiS: String? = null
     var tempo = 0
-    var spinnerDosi: Spinner? = null
-    var spinnerDifficolta: Spinner? = null
-    var spinnerCosto: Spinner? = null
-    var numberPicker: NumberPicker? = null
 
 
 
     override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_aggiungi_cocktail, container, false)
-        inserisciImmagine = root.findViewById(R.id.bottonemodificaimmagine)
-        titolo = root.findViewById(R.id.titolotext)
-        titoloL = root.findViewById(R.id.titolotextLayout)
-        fotoCocktail = root.findViewById(R.id.fotoricetta)
-        aggiuntaIngrediente = root.findViewById(R.id.button6)
-        aggiungiIngrediente = root.findViewById(R.id.aggiungi_ingredienti)
-        aggiuntaDescrizione = root.findViewById(R.id.button7)
-        aggiungiDescrizione = root.findViewById(R.id.aggiungi_descrizione)
-        spinnerDosi = root.findViewById(R.id.spinner_dosi)
-        spinnerDifficolta = root.findViewById(R.id.spinner_difficolta)
-        spinnerCosto = root.findViewById(R.id.spinner_costo)
-        numberPicker = root.findViewById(R.id.numberPicker)
-        salvaRicetta = root.findViewById(R.id.button8)
-        numberPicker!!.maxValue = 250
-        numberPicker!!.minValue = 0
-        //numberPicker!!.textSize = 50F
+                              container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        _binding = FragmentAggiungiCocktailBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.numberPicker.maxValue = 250
+        binding.numberPicker.minValue = 0
+        //binding.numberPicker.textSize = 50F
+         
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
+
         val adp = ArrayAdapter(requireContext(),
             android.R.layout.simple_spinner_item, tipologia)
+
         val scelta = AlertDialog.Builder(requireContext())
         scelta.setCancelable(false)
         scelta.setTitle("Scegli il tipo di cocktail")
+
         val sp = Spinner(context)
         sp.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         sp.adapter = adp
@@ -89,8 +70,10 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
         scelta.setView(sp)
         scelta.setPositiveButton("SALVA") { dialog, which -> Toast.makeText(context, "Tipo di cocktail salvato correttamente", Toast.LENGTH_SHORT).show() }
         scelta.create().show()
-        inserisciImmagine!!.setOnClickListener { cambiaImmagine() }
-        aggiuntaIngrediente!!.setOnClickListener { v ->
+
+        binding.bottonemodificaimmagine.setOnClickListener { cambiaImmagine() }
+
+        binding.button6.setOnClickListener { v ->
             val ingrediente = EditText(v.context)
             val inserisciIngrediente = AlertDialog.Builder(v.context)
             inserisciIngrediente.setMessage("INSERISCI IL NUOVO INGREDIENTE")
@@ -103,13 +86,13 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                     android.R.layout.simple_list_item_1,
                     ingredientiAl
                 )
-                aggiungiIngrediente!!.adapter = adapter
+                binding.aggiungiIngredienti.adapter = adapter
                 adapter!!.notifyDataSetChanged()
                 Toast.makeText(context, "Ingrediente aggiunto", Toast.LENGTH_SHORT).show()
             }
             inserisciIngrediente.create().show()
         }
-        aggiuntaDescrizione!!.setOnClickListener { v ->
+        binding.button7.setOnClickListener { v ->
             val descrizione = EditText(v.context)
             val inserisciDescrizione = AlertDialog.Builder(v.context)
             inserisciDescrizione.setMessage("INSERISCI LA DESCRIZIONE")
@@ -122,13 +105,13 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                     android.R.layout.simple_list_item_1,
                     descrizioneAl
                 )
-                aggiungiDescrizione!!.adapter = adapter2
+                binding.aggiungiDescrizione.adapter = adapter2
                 adapter2!!.notifyDataSetChanged()
                 Toast.makeText(context, "Procedimento aggiunto", Toast.LENGTH_SHORT).show()
             }
             inserisciDescrizione.create().show()
         }
-        aggiungiDescrizione!!.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+        binding.aggiungiDescrizione.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
             AlertDialog.Builder(requireContext())
                     .setMessage("Sicuro di voler eliminare l'elemento selezionato?")
                     .setPositiveButton("SI") { dialog, which ->
@@ -142,7 +125,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                     }.setNegativeButton("NO", null).create().show()
             true
         }
-        aggiungiIngrediente!!.onItemLongClickListener =
+        binding.aggiungiIngredienti.onItemLongClickListener =
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 AlertDialog.Builder(requireContext())
                     .setMessage("Sicuro di voler eliminare l'elemento selezionato?")
@@ -157,7 +140,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                     }.setNegativeButton("NO", null).create().show()
                 true
             }
-        spinnerDosi!!.onItemSelectedListener = object : OnItemSelectedListener {
+        binding.spinnerDosi.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 dosiS = parent.getItemAtPosition(position).toString()
             }
@@ -166,7 +149,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                 Toast.makeText(context, "Occorre selezionare la dose", Toast.LENGTH_SHORT).show()
             }
         }
-        spinnerDifficolta!!.onItemSelectedListener = object : OnItemSelectedListener {
+        binding.spinnerDifficolta.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 difficolta = parent.getItemAtPosition(position).toString()
             }
@@ -175,7 +158,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                 Toast.makeText(context, "Occorre selezionare la difficoltà", Toast.LENGTH_SHORT).show()
             }
         }
-        spinnerCosto!!.onItemSelectedListener = object : OnItemSelectedListener {
+        binding.spinnerCosto.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 costo = parent.getItemAtPosition(position).toString()
             }
@@ -184,15 +167,15 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                 Toast.makeText(context, "Occorre selezionare il costo", Toast.LENGTH_SHORT).show()
             }
         }
-        numberPicker!!.setOnValueChangedListener { picker, oldVal, newVal ->
+        binding.numberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
             tempo = picker.value
         }
-        salvaRicetta!!.setOnClickListener(View.OnClickListener {
-            val titoloString = titolo!!.text.toString().trimEnd()
+        binding.button8.setOnClickListener(View.OnClickListener {
+            val titoloString = binding.titolotext.text.toString().trimEnd()
             if (titoloString.isEmpty()) {
                 if (ingredientiAl.isEmpty()) {
                     if (descrizioneAl.isEmpty()) {
-                        titoloL!!.error = "E' richiesto il titolo"
+                        binding.titolotextLayout.error = "E' richiesto il titolo"
                     }
                     Toast.makeText(context, "Inserire gli ingredienti", Toast.LENGTH_SHORT).show()
                 }
@@ -214,7 +197,12 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
                 startActivity(back)
             }.addOnFailureListener { Toast.makeText(context, "Ricetta non salvata", Toast.LENGTH_SHORT).show() }
         })
-        return root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View,
@@ -255,7 +243,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener, NumberPicke
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
             imageUri = data.data
-            fotoCocktail!!.setImageURI(imageUri)
+            binding.fotoricetta.setImageURI(imageUri)
             caricaImmagine()
         }
     }

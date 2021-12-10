@@ -3,6 +3,7 @@ package com.example.newbiebartender
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.widget.EditText
@@ -64,22 +65,41 @@ class LoginActivity : AppCompatActivity() {
         val email = binding.emailEdittextLogin.text.toString().trim()
         val password = binding.passwordEdittextLogin.text.toString().trim()
 
+        if (TextUtils.isEmpty(email)) {
+            if (TextUtils.isEmpty(password)) {
+                binding.passwordEdittextLoginLayout.error = "Inserisci la password."
+                return
+            }
+            binding.emailEdittextLoginLayout.error = "Inserisci l'email."
+            return
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            binding.emailEdittextLoginLayout.error = "Il formato è errato."
+            return
+        }
+
+        if (password.length < 6) {
+            binding.passwordEdittextLoginLayout.error = "Inserisci una password di 6 caratteri/numeri."
+            return
+        }
+
+        /*
         if (email.isEmpty()) {
             binding.emailEdittextLoginLayout.error = "Inserisci l'email."
             return
         }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            binding.emailEdittextLoginLayout.error = "Il formato è errato."
-            return
-        }
+         */
+
+        /*
         if (password.isEmpty()) {
             binding.passwordEdittextLoginLayout.error = "Inserisci la password."
             return
         }
-        else if (password.length < 6) {
-            binding.passwordEdittextLoginLayout.error = "Inserisci una password di 6 caratteri/numeri."
-            return
-        }
+         */
+
+
+
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {

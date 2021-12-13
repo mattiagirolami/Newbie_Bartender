@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
         session = LoginPref(this)
         if (session.isLoggedIn()){
             var i : Intent = Intent(applicationContext, Navigation::class.java)
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(i)
             finish()
         }
@@ -117,7 +117,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
+        //super.onBackPressed()
+        finish()
     }
 
 }

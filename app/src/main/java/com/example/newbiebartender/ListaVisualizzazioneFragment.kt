@@ -11,6 +11,7 @@ import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.newbiebartender.databinding.FragmentListaVisualizzazioneBinding
 import com.example.newbiebartender.ui.MyProfileFragment
 import com.example.newbiebartender.ui.VisualizzaRicettaFragment
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,14 +29,16 @@ open class ListaVisualizzazioneFragment : Fragment() {
     var idResultData = ArrayList<String>()
     var resultsData = ArrayList<String>()
 
-    var visualizzaTitoli: ListView? = null
-    var ricerca: EditText? = null
     open var tipoCocktail: String? = null
 
-    var titolo: String? = null
+    open var titolo: String? = null
+    //open var titolo: TextView? = null
 
     var id: String? = null
     var idRecipe: String? = null
+    
+    private  var _binding: FragmentListaVisualizzazioneBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +48,10 @@ open class ListaVisualizzazioneFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_lista_visualizzazione, container, false)
 
-        visualizzaTitoli = root.findViewById(R.id.listview)
-        ricerca = root.findViewById(R.id.ricerca)
+        _binding = FragmentListaVisualizzazioneBinding.inflate(inflater, container, false)
+        val view = binding.root
+
         db = FirebaseFirestore.getInstance()
 
         db!!.collection(tipoCocktail!!)
@@ -56,30 +59,31 @@ open class ListaVisualizzazioneFragment : Fragment() {
             if (task.isSuccessful) {
                 for (doc in task.result!!) {
                     titolo = doc["titolo"] as String?
+                    //titolo!!.text = doc["titolo"] as String?
                     id = doc.id
                     titoli.add(titolo!!)
                     idL.add(id!!)
                 }
-                visualizzaTitoli!!.adapter = listAdapter
+                binding.listview.adapter = listAdapter
             } else {
                 val intent = Intent(this.context, MyProfileFragment::class.java)
                 startActivity(intent)
             }
         }
 
-        visualizzaTitoli!!.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+        binding.listview.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             idRecipe = idL[position]
             openFragment(idRecipe, tipoCocktail)
         }
 
-        ricerca!!.addTextChangedListener(object : TextWatcher {
+        binding.ricerca.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 listAdapter.filter.filter(s.toString())
             }
         })
-        return root
+        return view
     }
 
     private fun openFragment(idRecipe: String?, tipoCocktail: String?) {
@@ -132,7 +136,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
                         for (name in titoli) {
                             if (name.toUpperCase(Locale.ROOT).startsWith(searchString)) {
                                 if (resultsData.contains(name)) {
-                                    if (ricerca!!.length() == 0) results.values = titoli
+                                    if (binding.ricerca.length() == 0) results.values = titoli
                                     resultsData.clear()
                                     break
                                 }
@@ -148,9 +152,9 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
                 override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                     listaFiltrata = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, resultsData)
-                    visualizzaTitoli!!.adapter = listaFiltrata
+                    binding.listview.adapter = listaFiltrata
                     notifyDataSetChanged()
-                    visualizzaTitoli!!.onItemClickListener =
+                    binding.listview.onItemClickListener =
                             AdapterView.OnItemClickListener { parent, view, position, id ->
                                 idRecipe = idResultData[position]
                                 openFragment(idRecipe, tipoCocktail)

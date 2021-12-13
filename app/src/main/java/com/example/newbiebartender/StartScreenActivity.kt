@@ -13,7 +13,15 @@ class StartScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_start_screen)
+
         logo = findViewById(R.id.imageView_startScreen)
+        //TODO: è brutta, rivedere
+        logo!!.animate().apply {
+            duration = 1400
+            rotationYBy(360f)
+            rotationY(360f)
+        }.start()
+
         Handler().postDelayed({
             val intent = Intent(this@StartScreenActivity, LoginActivity::class.java)
             startActivity(intent)

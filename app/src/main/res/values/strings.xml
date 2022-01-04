@@ -4,23 +4,16 @@
     <string name="non_sei_registrato_registrati_ora">Non sei registrato?<b> Registrati ora!</b></string>
     <string name="sei_gi_registrato_torna_al_login">Sei già registrato? <b>Torna al login</b></string>
 
-    <string-array name="dosi">
-        <item>1 persona</item>
-        <item>4 persone</item>
-        <item>8 persone</item>
-        <item>10 persone</item>
-    </string-array>
-
-    <string-array name="difficolta">
+    <string-array name="difficolta_array">
         <item>Bassa</item>
         <item>Media</item>
         <item>Alta</item>
     </string-array>
 
-    <string-array name="costo">
-        <item>Basso</item>
-        <item>Medio</item>
-        <item>Alto</item>
+    <string-array name="tipologia_array">
+        <item>Analcolico</item>
+        <item>Alcolico</item>
     </string-array>
+
 
 </resources>

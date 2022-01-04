@@ -31,7 +31,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
 
-    //TODO: controllare questo problema
     override var titolo: String? = null
 
     var docref: DocumentReference? = null
@@ -52,15 +51,9 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        //val root = inflater.inflate(R.layout.fragment_visualizza_ricetta, container, false)
 
         _binding = FragmentVisualizzaRicettaBinding.inflate(inflater, container, false)
         val view = binding.root
-
-
-        //titolo = root.findViewById(R.id.nomecocktail)
-
-
         
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
@@ -73,14 +66,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             if (task.isSuccessful) {
                 val document = task.result
                 if (document!!.exists()) {
-                    //titolo = document["titolo"].toString()
-                    //titolo!!.text = document["titolo"].toString()
                     binding.nomecocktail.text = document["titolo"].toString()
-                    //titoloS = document["titolo"] as TextView?
-                    binding.costo.text = document["costo"].toString()
-                    binding.dosi.text = document["dosi"].toString()
                     binding.difficolta.text = document["difficoltà"].toString()
-                    binding.tempo.text = document["tempo"].toString()
 
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()

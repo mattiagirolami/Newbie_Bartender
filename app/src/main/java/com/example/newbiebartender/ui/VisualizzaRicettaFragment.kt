@@ -1,5 +1,6 @@
 package com.example.newbiebartender.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
@@ -56,6 +58,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
                     binding.procedimentoView.text = document["descrizione"].toString()
                     binding.tipologiaTofill.text = tipoCocktail.toString()
+                    binding.recipeByUser.text = "Ricetta di ${document["autore"].toString()}"
 
                     val arrayIngr = document["ingredienti"] as ArrayList<String>?
                     var ingreds = ""

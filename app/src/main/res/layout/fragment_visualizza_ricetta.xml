@@ -1,150 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/arancione_bello">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.VisualizzaRicettaFragment">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/fotocock"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/listaFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/nome_cock_tw"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="#C9FFFFFF"
+            android:gravity="bottom"
+            android:text="TextView"
+            android:textAlignment="gravity"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/fotocock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-    <ScrollView
-        android:id="@+id/scrollvr"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/white"
-        android:fillViewport="true"
-        android:orientation="vertical"
-        app:layout_anchor="@+id/linearLayout2"
-        app:layout_anchorGravity="center">
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#F8E9BC"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fotocock">
 
-        <LinearLayout
-            android:id="@+id/nuova_ricetta"
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".VisualizzaRicetta">
+            android:gravity="center"
+            android:padding="2dp">
 
             <TextView
-                android:id="@+id/nomecocktail"
+                android:id="@+id/twTipologia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="Tipologia:"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/twDifficolta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="Difficoltà:"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/tipologia_tofill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/difficolta_tofill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/tableLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#F8E9BC"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+
+            <TextView
+                android:id="@+id/twIngredienti"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_gravity="center_horizontal"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="35sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:text="Ingredienti: "
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/fotodeldrink"
-                android:layout_width="250dp"
-                android:layout_height="201dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:adjustViewBounds="true"
-                android:background="#ced4da"
-                android:padding="0dp"
-                android:scaleType="centerCrop" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="2dp">
 
-            <ImageButton
-                android:id="@+id/fav_button"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_baseline_favorite_border_24" />
+                <TextView
+                    android:id="@+id/ingredienti"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:text="Ingredienti"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-            <ImageButton
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="start"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="50dp"
-                android:background="#FFFFFF"
-                android:src="@drawable/ic_difficolta" />
+                <TextView
+                    android:id="@+id/quantità"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:text="Quantità"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="-25dp"
-                android:text="Difficoltà: "
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/difficolta"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="-31dp"
-                android:layout_marginEnd="21dp"
-                android:textColor="#000000"
+                android:id="@+id/twProcedimento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Procedimento: "
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <TextView
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="35dp"
-                android:text="Ingredienti:"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/visualizza_ingredienti"
+                android:id="@+id/procedimento_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                android:divider="#FFFFFF"
-                android:nestedScrollingEnabled="true" />
-
-            <TextView
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="35dp"
-                android:text="Descrizione:"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/visualizza_descrizione"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_marginTop="10dp"
-                android:divider="#FFFFFF"
-                android:dividerHeight="3dp"
-                android:nestedScrollingEnabled="true" />
-
-            <ImageButton
-                android:id="@+id/tornaIndietro"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="start"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/button_logout"
-                android:src="@drawable/ic_return" />
+                android:layout_height="wrap_content"
+                android:text="Procedimento" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</ScrollView>

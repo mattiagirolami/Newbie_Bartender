@@ -31,8 +31,6 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
     var storage: FirebaseStorage?= null
     private var storageReference: StorageReference ?= null
-    //var ingredientiAl = ArrayList<String>()
-    var descrizioneAl = ArrayList<String>()
     var id = GenerateRandomString.randomString(20)
     var imageUri: Uri? = null
     var difficolta: String? = null
@@ -83,16 +81,18 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
         binding.buttonSalvaRicetta.setOnClickListener(View.OnClickListener {
 
-            val titoloString = binding.nomeCocktailEditText.text.toString().trimEnd()
+            val titoloString = binding.nomeCocktailEditText.text.toString().trim()
+
+            val descrizione  = binding.editTextTextMultiline.text.toString().trim()
 
             if (titoloString.isEmpty()) {
                 if (ingredienti.isEmpty()) {
-                    if (descrizioneAl.isEmpty()) {
-                        binding.nomeCocktailEditText.error = "E' richiesto il titolo"
+                    if (descrizione.isEmpty()) {
+                        binding.nomeCocktailEditText.error = "Inserire la descrizione"
                     }
-                    Toast.makeText(context, "Inserire gli ingredienti", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Inserire almeno un ingrediente", Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(context, "Inserire il procedimento", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Inserire il nome del cocktail", Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
 
@@ -100,7 +100,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["titolo"] = titoloString
             ricettaMap["difficoltà"] = difficolta
             ricettaMap["ingredienti"] = ingredienti
-            ricettaMap["descrizione"] = descrizioneAl
+            ricettaMap["descrizione"] = descrizione
             val db = FirebaseFirestore.getInstance()
             db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {
                 Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
@@ -116,19 +116,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         _binding = null
     }
 
-    override fun onItemSelected(parent: AdapterView<*>, view: View,
-                                pos: Int, id: Long) {
-        val item = parent.getItemAtPosition(pos).toString()
-        tipo_drink = if (item == "ANALCOLICO") {
-            "analcolico"
-        } else {
-            "alcolico"
-        }
-    }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        Toast.makeText(context, "Occorre selezionare il tipo di cocktail", Toast.LENGTH_SHORT).show()
-    }
+
 
     private fun cambiaImmagine() {
         val intent = Intent()
@@ -176,13 +165,13 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         }
     }
 
-    companion object {
-        fun newInstance(): AggiungiCocktailFragment {
-            val fragment = AggiungiCocktailFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 
 }

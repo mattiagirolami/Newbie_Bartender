@@ -1,16 +1,11 @@
 package com.example.newbiebartender.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ScrollView
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
-import com.example.newbiebartender.Navigation
 import com.example.newbiebartender.databinding.FragmentVisualizzaRicettaBinding
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,12 +16,6 @@ import com.google.firebase.storage.StorageReference
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     private var storageReference: StorageReference ?= null
-
-    private var ingredientiL: List<String>? = ArrayList()
-    private var descrizioneL: List<String> = ArrayList()
-
-    var adapterIngredienti: ArrayAdapter<String>? = null
-    var adapterDescrizione: ArrayAdapter<String>? = null
 
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
@@ -66,36 +55,41 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             if (task.isSuccessful) {
                 val document = task.result
                 if (document!!.exists()) {
-                    binding.nomecocktail.text = document["titolo"].toString()
-                    binding.difficolta.text = document["difficoltà"].toString()
+                    binding.nomeCockTw.text = document["titolo"].toString()
+                    binding.difficoltaTofill.text = document["difficoltà"].toString()
+                    binding.procedimentoView.text = document["descrizione"].toString()
+                    binding.tipologiaTofill.text = tipoCocktail.toString()
+
+                    val arrayIngr = document["ingredienti"] as ArrayList<String>?
+                    var ingreds = ""
+                    if (arrayIngr != null){
+                        for (ing in arrayIngr) {
+                            ingreds = ingreds+ing+"\n"
+                        }
+                    }
+
+                    binding.ingredienti.text = ingreds
 
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
-                        Glide.with(requireContext()).load(imageUrl).into(binding.fotodeldrink)
+                        Glide.with(requireContext()).load(imageUrl).into(binding.fotocock)
                     }
                     //TODO: risolvere questo problema
-                    ingredientiL = (document["ingredienti"] as List<String>?)!!
+                    /*ingredientiL = (document["ingredienti"] as List<String>?)!!
                     adapterIngredienti = ArrayAdapter(requireContext(),
                             android.R.layout.simple_list_item_1,
                             ingredientiL!!)
                     binding.visualizzaIngredienti.adapter = adapterIngredienti
                     adapterIngredienti!!.notifyDataSetChanged()
-                    descrizioneL = (document["descrizione"] as List<String>?)!!
-                    adapterDescrizione = ArrayAdapter(requireContext(),
-                            android.R.layout.simple_list_item_1,
-                            descrizioneL)
-                    binding.visualizzaDescrizione.adapter = adapterDescrizione
-                    adapterDescrizione!!.notifyDataSetChanged()
+                     */
+
+
+
                 }
             }
         }
-        binding.scrollvr.fullScroll(ScrollView.FOCUS_DOWN)
-        binding.scrollvr.fullScroll(ScrollView.FOCUS_UP)
 
-        binding.tornaIndietro.setOnClickListener {
-            val back = Intent(context, Navigation::class.java)
-            startActivity(back)
-        }
+
         return view
     }
 

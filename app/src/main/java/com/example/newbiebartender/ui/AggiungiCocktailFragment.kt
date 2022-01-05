@@ -13,6 +13,8 @@ import android.widget.AdapterView.*
 import androidx.fragment.app.Fragment
 import com.example.newbiebartender.Navigation
 import com.example.newbiebartender.databinding.FragmentAggiungiCocktailBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -24,7 +26,6 @@ import kotlin.collections.ArrayList
 
 class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
-    private lateinit var editorIngredienti : EditText
 
     private  var _binding: FragmentAggiungiCocktailBinding? = null
     private val binding get() = _binding!!
@@ -35,6 +36,17 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
     var imageUri: Uri? = null
     var difficolta: String? = null
 
+    var auth = FirebaseAuth.getInstance().currentUser
+
+    /*FirebaseFirestore.getInstance().collection("users").document(auth!!.email!!)
+    .get().addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                     username = task.result
+                }
+            }
+
+     */
+
     var tipologia: String? = null
     lateinit var tipo_drink: String
 
@@ -43,9 +55,18 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
         _binding = FragmentAggiungiCocktailBinding.inflate(inflater, container, false)
         val view = binding.root
-         
+
+        var user: DocumentSnapshot? = null
+
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
+
+        FirebaseFirestore.getInstance().collection("users")
+                .document(auth!!.email!!).get().addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        user = task.result
+                    }
+                }
 
         binding.imgButtonAdd.setOnClickListener { cambiaImmagine() }
 
@@ -72,7 +93,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         }
 
         var ingredienti: ArrayList<String> = arrayListOf()
-        binding.ingrediente.setOnClickListener { view ->
+        var editorIngredienti = binding.ingrediente
+        binding.buttonAggiugniIng.setOnClickListener { view ->
             var append = editorIngredienti.text.toString()
             ingredienti.add(append)
             editorIngredienti.text.clear()
@@ -101,6 +123,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["difficoltà"] = difficolta
             ricettaMap["ingredienti"] = ingredienti
             ricettaMap["descrizione"] = descrizione
+            ricettaMap["autore"] = user!!["username"].toString()
             val db = FirebaseFirestore.getInstance()
             db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {
                 Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()

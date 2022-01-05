@@ -19,11 +19,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
-
     override var titolo: String? = null
-
     var docref: DocumentReference? = null
-
     var idRicetta: String? = null
     override var tipoCocktail: String? = null
 
@@ -74,17 +71,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                         val imageUrl = uri.toString()
                         Glide.with(requireContext()).load(imageUrl).into(binding.fotocock)
                     }
-                    //TODO: risolvere questo problema
-                    /*ingredientiL = (document["ingredienti"] as List<String>?)!!
-                    adapterIngredienti = ArrayAdapter(requireContext(),
-                            android.R.layout.simple_list_item_1,
-                            ingredientiL!!)
-                    binding.visualizzaIngredienti.adapter = adapterIngredienti
-                    adapterIngredienti!!.notifyDataSetChanged()
-                     */
-
-
-
                 }
             }
         }

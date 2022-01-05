@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/arancione_bello">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/fotocock"
@@ -29,7 +27,9 @@
             android:text="TextView"
             android:textAlignment="gravity"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="22sp"
+            android:textAllCaps="true"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/fotocock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,11 +55,13 @@
                 android:id="@+id/twTipologia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:gravity="center"
                 android:padding="7dp"
                 android:text="Tipologia:"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/twDifficolta"
@@ -69,7 +71,8 @@
                 android:padding="7dp"
                 android:text="Difficoltà:"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
         </TableRow>
 
@@ -83,6 +86,7 @@
                 android:id="@+id/tipologia_tofill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:gravity="center"
                 android:padding="7dp"
                 android:text="TextView"
@@ -117,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ingredienti: "
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -136,21 +141,12 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/quantità"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:text="Quantità"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
             </TableRow>
 
         </TableLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -166,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Procedimento: "
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -175,8 +172,23 @@
                 android:layout_height="wrap_content"
                 android:text="Procedimento" />
 
+            <TextView
+                android:id="@+id/recipe_by_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                app:layout_constraintTop_toBottomOf="@id/procedimento_view"
+                android:text="Autore"
+                android:textColor="@color/black"/>
+
         </LinearLayout>
 
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </ScrollView>

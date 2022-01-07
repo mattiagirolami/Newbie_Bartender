@@ -7,8 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
+import com.example.newbiebartender.R
 import com.example.newbiebartender.databinding.FragmentVisualizzaRicettaBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -17,6 +22,10 @@ import com.google.firebase.storage.StorageReference
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     private var storageReference: StorageReference ?= null
+
+    private lateinit var auth: FirebaseUser
+
+    private var isFav = false
 
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
@@ -34,6 +43,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             idRicetta = requireArguments().getString("idRicetta")
             tipoCocktail = requireArguments().getString("tipoCocktail")
         }
+
+        auth = FirebaseAuth.getInstance().currentUser!!
     }
 
     @SuppressLint("SetTextI18n")
@@ -53,6 +64,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val document = task.result
+
                 if (document!!.exists()) {
                     binding.nomeCockTw.text = document["titolo"].toString()
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
@@ -67,8 +79,27 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                             ingreds = ingreds+ing+"\n"
                         }
                     }
-
                     binding.ingredienti.text = ingreds
+
+                    checkFavourite(document)
+
+                    if (checkFavourite(document)){
+                        binding.showRecipeToolbar.menu.getItem(0)
+                                .setIcon(R.drawable.ic_full_star)
+                        binding.showRecipeToolbar.menu.getItem(0)
+                                .setOnMenuItemClickListener {
+                                    removeFav()
+                                    true
+                                }
+                    } else {
+                        binding.showRecipeToolbar.menu.getItem(0)
+                                .setIcon(R.drawable.ic_empty_star)
+                        binding.showRecipeToolbar.menu.getItem(0)
+                                .setOnMenuItemClickListener {
+                                    addToFav()
+                                    true
+                                }
+                    }
 
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
@@ -80,6 +111,37 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
 
         return view
+    }
+
+    private fun checkFavourite(document: DocumentSnapshot) : Boolean {
+
+        for(favourite in document["preferiti"] as ArrayList<String>) {
+            if(favourite == auth.email) {
+                isFav = true
+            }
+        }
+        return isFav
+    }
+
+    private fun addToFav() {
+
+        isFav = true
+
+        FirebaseFirestore.getInstance()
+                .collection(tipoCocktail!!)
+                .document(id!!)
+                .update("preferiti", FieldValue.arrayUnion(auth.email.toString()))
+
+    }
+
+    private fun removeFav() {
+        isFav = false
+
+        FirebaseFirestore.getInstance()
+                .collection(tipoCocktail!!)
+                .document(id!!)
+                .update("preferiti", FieldValue.arrayRemove(auth.email.toString()))
+
     }
 
 

@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/arancione_sfondo"
     tools:context=".ListaVisualizzazioneFragment">
 
-    <EditText
-        android:id="@+id/ricerca"
-        android:layout_marginTop="0dp"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/lista_appBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_horizontal"
-        android:padding="5dp"
-        android:inputType="text"
-        android:textSize="25sp"
-        android:textStyle="normal"
-        android:background="@color/arancione_bello"
-        android:drawableStart="@drawable/ic_search"
-        android:hint=" Ricerca"
-        android:textColorHint="#FFFFFF"
-        />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/lista_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_return"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ListView
         android:id="@+id/listview"

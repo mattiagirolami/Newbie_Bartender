@@ -3,30 +3,30 @@ package com.example.newbiebartender
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.inflate
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.BaseAdapter
+import android.widget.TextView
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.newbiebartender.databinding.FragmentListaVisualizzazioneBinding
 import com.example.newbiebartender.ui.MyProfileFragment
 import com.example.newbiebartender.ui.VisualizzaRicettaFragment
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.collections.ArrayList
 
 open class ListaVisualizzazioneFragment : Fragment() {
 
     open var db: FirebaseFirestore? = null
     var listAdapter: ListAdapter = ListAdapter(this.context)
-    var listaFiltrata: ArrayAdapter<String>? = null
     var titoli = ArrayList<String>()
 
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
     var idL = ArrayList<String>()
-    var idResultData = ArrayList<String>()
-    var resultsData = ArrayList<String>()
 
     open var tipoCocktail: String? = null
 
@@ -52,6 +52,10 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
 
+        binding.listaToolbar.title = tipoCocktail
+
+        setupToolbarWithNavigation()
+
         db!!.collection(tipoCocktail!!)
             .get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -74,14 +78,14 @@ open class ListaVisualizzazioneFragment : Fragment() {
             openFragment(idRecipe, tipoCocktail)
         }
 
-        binding.ricerca.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                listAdapter.filter.filter(s.toString())
-            }
-        })
         return view
+    }
+
+    private fun setupToolbarWithNavigation() {
+        toolbar = binding.listaToolbar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun openFragment(idRecipe: String?, tipoCocktail: String?) {
@@ -94,7 +98,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
     }
 
 
-    inner class ListAdapter(var context: Context?) : BaseAdapter(), Filterable {
+    inner class ListAdapter(var context: Context?) : BaseAdapter() {
         override fun getCount(): Int {
             return titoli.size
         }
@@ -115,50 +119,6 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         }
 
-        //TODO: far funzionare o rimuovere searchbar
-        override fun getFilter(): Filter {
-            return object : Filter() {
-                override fun performFiltering(constraint: CharSequence?): FilterResults {
-                    val results = FilterResults()
-                    if (constraint.isNullOrBlank()) {
-                        results.values = titoli
-                        results.count = resultsData.size
-                        resultsData.clear()
-                        resultsData.addAll(titoli)
-                    } else {
-                        idResultData.clear()
-                        val searchString = constraint.toString()
-
-                        for (name in titoli) {
-                            //if (name.toUpperCase(Locale.ROOT).startsWith(searchString)) {
-                            if(name.contains(searchString)){
-                                if (resultsData.contains(name)) {
-                                    if (binding.ricerca.toString().isBlank()) results.values = titoli
-                                    resultsData.clear()
-                                    break
-                                }
-                                resultsData.add(name)
-                                idResultData.add(idL[titoli.indexOf(name)])
-                                results.values = name
-                                results.count = resultsData.size
-                            }
-                        }
-                    }
-                    return results
-                }
-
-                override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                    listaFiltrata = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, resultsData)
-                    binding.listview.adapter = listaFiltrata
-                    notifyDataSetChanged()
-                    binding.listview.onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, view, position, id ->
-                            idRecipe = idResultData[position]
-                            openFragment(idRecipe, tipoCocktail)
-                        }
-                }
-            }
-        }
     }
 
     companion object {

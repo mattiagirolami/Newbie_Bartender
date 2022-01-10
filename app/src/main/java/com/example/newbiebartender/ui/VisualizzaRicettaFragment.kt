@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
 import com.example.newbiebartender.R
@@ -56,6 +55,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
         _binding = FragmentVisualizzaRicettaBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        setupToolbarWithNavigation()
         
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
@@ -124,6 +125,16 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
         return view
     }
+
+
+    private fun setupToolbarWithNavigation() {
+        val toolbar = binding.showRecipeToolbar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+
 
     private fun checkFavourite(document: DocumentSnapshot) : Boolean {
 

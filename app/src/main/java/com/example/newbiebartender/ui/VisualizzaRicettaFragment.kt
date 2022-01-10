@@ -23,6 +23,8 @@ import com.google.firebase.storage.StorageReference
 
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
+    //TODO: vedere se unificare tutti i cocktail sotto un'unica cartella su firebase
+
     private var storageReference: StorageReference ?= null
 
     private lateinit var auth: FirebaseUser

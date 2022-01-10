@@ -52,10 +52,12 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
 
-        binding.listaToolbar.title = tipoCocktail
+        if(tipoCocktail=="analcolico")  binding.listaToolbar.title = "Analcolici"
+        else binding.listaToolbar.title ="Alcolici"
 
         setupToolbarWithNavigation()
 
+        //TODO: Aggiungere immagine agli elementi della lista
         db!!.collection(tipoCocktail!!)
             .get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {

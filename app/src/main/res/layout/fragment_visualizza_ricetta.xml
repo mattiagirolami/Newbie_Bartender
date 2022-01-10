@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
+            tools:src="@drawable/drink_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/showRecipe_appBar"  />
 
@@ -43,7 +44,7 @@
             android:layout_height="50dp"
             android:background="#C9FFFFFF"
             android:gravity="bottom"
-            android:text="TextView"
+            tools:text="Titolo"
             android:textAlignment="gravity"
             android:textColor="@color/black"
             android:textSize="22sp"
@@ -88,7 +89,19 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="7dp"
+                android:layout_marginEnd="30dp"
                 android:text="Difficoltà:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/twRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="Rating:"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -108,7 +121,7 @@
                 android:layout_marginEnd="30dp"
                 android:gravity="center"
                 android:padding="7dp"
-                android:text="TextView"
+                tools:text="Tipo"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -116,9 +129,20 @@
                 android:id="@+id/difficolta_tofill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:gravity="center"
                 android:padding="7dp"
-                android:text="TextView"
+                tools:text="Facile"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/rating_tofill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="7dp"
+                tools:text="4,7"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -190,6 +214,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Procedimento" />
+
+            <TextView
+                android:id="@+id/rating_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Aggiungi la tua valutazione: "
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+            <Spinner
+                android:id="@+id/spinner_valutazione"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/valutazione_array"
+                android:layout_marginTop="-27dp"
+                android:layout_marginStart="280dp"
+                style="@style/Widget.AppCompat.Spinner"/>
+
 
             <TextView
                 android:id="@+id/recipe_by_user"

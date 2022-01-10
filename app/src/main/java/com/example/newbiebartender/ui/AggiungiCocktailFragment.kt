@@ -120,6 +120,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["descrizione"] = descrizione
             ricettaMap["preferiti"] = preferiti
             ricettaMap["autore"] = user!!["username"].toString()
+            ricettaMap["tipoRicetta"] = tipo_drink
+
             val db = FirebaseFirestore.getInstance()
             db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {
                 Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
@@ -171,7 +173,6 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         fun onFragmentInteraction(backText: String?)
     }
 
-    //Inner class
     object GenerateRandomString {
         const val DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         var RANDOM = Random()

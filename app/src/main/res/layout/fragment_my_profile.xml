@@ -33,11 +33,10 @@
             android:layout_width="150dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="30dp"
             android:adjustViewBounds="true"
             android:padding="0dp"
-            android:src="@drawable/ic_user"
-            android:background="@color/arancione_bello"/>
+            android:src="@drawable/ic_user" />
 
         <ImageButton
             android:id="@+id/bottonemodifica"
@@ -62,7 +61,7 @@
         <TextView
             android:id="@+id/nomeutente"
             android:layout_width="300dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="60dp"
             android:hint="Username"
@@ -75,9 +74,9 @@
         <TextView
             android:id="@+id/email"
             android:layout_width="300dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:hint="E-mail"
             android:textColorHint="@color/black"
             android:textAlignment="center"
@@ -90,7 +89,7 @@
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/button_modificausername"
             android:text="PREFERITI"
             android:textColor="@color/white"

@@ -2,6 +2,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/arancione_bello">
@@ -30,7 +31,7 @@
 
         <ImageView
             android:id="@+id/fotocock"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
@@ -201,9 +202,6 @@
                 android:textColor="@color/black"/>
 
         </LinearLayout>
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

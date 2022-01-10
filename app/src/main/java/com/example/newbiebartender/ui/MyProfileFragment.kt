@@ -80,7 +80,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 }
             }
 
-        tool_log!!.setOnMenuItemClickListener() {
+        tool_log!!.setOnMenuItemClickListener {
             val mAuth = FirebaseAuth.getInstance()
             mAuth.signOut()
             session.logoutUser()
@@ -95,11 +95,17 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
 
         binding.gotoFavourites.setOnClickListener{
 
-            val fragment: FavouritesFragment = FavouritesFragment.newInstance()
+            /*val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction.addToBackStack(null)
+            transaction.add(R.id.favouriteCocktailFragment, FavouritesFragment(), "FAVOURITECOCKTAIL_FRAGMENT").commit()
+             */
+
+            val fragment: FavouritesFragment = FavouritesFragment.newInstance(11, "analcolico")
             val fragmentManager = requireActivity().supportFragmentManager
             val transaction = fragmentManager.beginTransaction()
             transaction.addToBackStack(null)
-            transaction.add(R.id.favouriteCocktailFragment, fragment, "FAVOURITECOCKTAIL_FRAGMENT").commit()
+            transaction.add(R.id.favouriteCocktailFragment, fragment, "VISUALIZZARECIPE_FRAGMENT").commit()
         }
 
         binding.modificaPassword.setOnClickListener { v ->

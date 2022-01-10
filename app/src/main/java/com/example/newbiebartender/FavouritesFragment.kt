@@ -3,7 +3,6 @@ package com.example.newbiebartender
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.inflate
@@ -11,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.TextView
-import android.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.newbiebartender.databinding.FragmentFavouritesBinding
 import com.example.newbiebartender.ui.MyProfileFragment
@@ -55,7 +54,7 @@ class FavouritesFragment : Fragment() {
 
     private fun showAlcolico() {
 
-        db.collection("alcolico")
+        db.collection("alcolico").whereArrayContains("preferiti", auth.email!!.toString())
                 .get().addOnCompleteListener { task ->
                     if(task.isSuccessful) {
                         for(doc in task.result!!) {
@@ -79,7 +78,7 @@ class FavouritesFragment : Fragment() {
     }
 
     private fun showAnalcolico() {
-        db.collection("analcolico")
+        db.collection("analcolico").whereArrayContains("preferiti", auth.email!!.toString())
                 .get().addOnCompleteListener { task ->
                     if(task.isSuccessful) {
                         for(doc in task.result!!) {
@@ -143,9 +142,8 @@ class FavouritesFragment : Fragment() {
 
     companion object {
 
-        fun newInstance(): FavouritesFragment {
-            val fragment = FavouritesFragment()
-            return fragment
+        fun newInstance(i: Int, s: String): FavouritesFragment {
+            return FavouritesFragment()
         }
     }
 

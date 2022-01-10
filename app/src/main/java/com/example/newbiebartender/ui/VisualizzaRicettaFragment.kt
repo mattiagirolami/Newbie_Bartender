@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
 import com.example.newbiebartender.R
@@ -82,24 +85,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     binding.ingredienti.text = ingreds
 
                     checkFavourite(document)
-
-                    if (checkFavourite(document)){
-                        binding.showRecipeToolbar.menu.getItem(0)
-                                .setIcon(R.drawable.ic_full_star)
-                        binding.showRecipeToolbar.menu.getItem(0)
-                                .setOnMenuItemClickListener {
-                                    removeFav()
-                                    true
-                                }
-                    } else {
-                        binding.showRecipeToolbar.menu.getItem(0)
-                                .setIcon(R.drawable.ic_empty_star)
-                        binding.showRecipeToolbar.menu.getItem(0)
-                                .setOnMenuItemClickListener {
-                                    addToFav()
-                                    true
-                                }
-                    }
 
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg")
                             .downloadUrl

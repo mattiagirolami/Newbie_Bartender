@@ -26,7 +26,11 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.newbiebartender.ui.MyProfileFragment"
         android:label="Profilo"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_favouriteCocktailFragment_"
+            app:destination="@id/favouriteCocktailFragment_" />
+    </fragment>
 
     <fragment
         android:id="@+id/listaVisualizzazione_frag"
@@ -45,7 +49,7 @@
         tools:layout="@layout/fragment_visualizza_ricetta"/>
 
     <fragment
-        android:id="@+id/favouriteCocktailFragment"
+        android:id="@+id/favouriteCocktailFragment_"
         android:name="com.example.newbiebartender.FavouritesFragment"
         android:label="Preferiti"
         tools:layout="@layout/fragment_favourites" />

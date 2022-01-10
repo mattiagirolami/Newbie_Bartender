@@ -15,7 +15,6 @@ import com.example.newbiebartender.databinding.FragmentListaVisualizzazioneBindi
 import com.example.newbiebartender.ui.MyProfileFragment
 import com.example.newbiebartender.ui.VisualizzaRicettaFragment
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
 import kotlin.collections.ArrayList
 
 open class ListaVisualizzazioneFragment : Fragment() {
@@ -35,7 +34,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
     var id: String? = null
     var idRecipe: String? = null
-    
+
     private  var _binding: FragmentListaVisualizzazioneBinding? = null
     private val binding get() = _binding!!
 
@@ -55,20 +54,20 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         db!!.collection(tipoCocktail!!)
             .get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                for (doc in task.result!!) {
-                    titolo = doc["titolo"] as String?
-                    //titolo!!.text = doc["titolo"] as String?
-                    id = doc.id
-                    titoli.add(titolo!!)
-                    idL.add(id!!)
+                if (task.isSuccessful) {
+                    for (doc in task.result!!) {
+                        titolo = doc["titolo"] as String?
+                        //titolo!!.text = doc["titolo"] as String?
+                        id = doc.id
+                        titoli.add(titolo!!)
+                        idL.add(id!!)
+                    }
+                    binding.listview.adapter = listAdapter
+                } else {
+                    val intent = Intent(this.context, MyProfileFragment::class.java)
+                    startActivity(intent)
                 }
-                binding.listview.adapter = listAdapter
-            } else {
-                val intent = Intent(this.context, MyProfileFragment::class.java)
-                startActivity(intent)
             }
-        }
 
         binding.listview.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             idRecipe = idL[position]
@@ -116,6 +115,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         }
 
+        //TODO: far funzionare o rimuovere searchbar
         override fun getFilter(): Filter {
             return object : Filter() {
                 override fun performFiltering(constraint: CharSequence?): FilterResults {
@@ -148,14 +148,14 @@ open class ListaVisualizzazioneFragment : Fragment() {
                 }
 
                 override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                    listaFiltrata = ArrayAdapter(requireContext(), R.layout.textviewlist, resultsData)
+                    listaFiltrata = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, resultsData)
                     binding.listview.adapter = listaFiltrata
                     notifyDataSetChanged()
                     binding.listview.onItemClickListener =
-                            AdapterView.OnItemClickListener { parent, view, position, id ->
-                                idRecipe = idResultData[position]
-                                openFragment(idRecipe, tipoCocktail)
-                            }
+                        AdapterView.OnItemClickListener { parent, view, position, id ->
+                            idRecipe = idResultData[position]
+                            openFragment(idRecipe, tipoCocktail)
+                        }
                 }
             }
         }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/browser_actions_bg_grey">
+    android:background="@color/arancione_sfondo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,8 +30,9 @@
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="150dp"
-                android:fontFamily="cursive"
+                android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
+                android:background="@color/arancione_bello"
                 android:text="Analcolici"
                 android:textAlignment="center"
                 android:textColor="#000000"
@@ -59,12 +60,13 @@
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="150dp"
-                android:fontFamily="cursive"
+                android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:text="Alcolici"
+                android:background="@color/arancione_bello"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="35sp"
+                android:textSize="35dp"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>

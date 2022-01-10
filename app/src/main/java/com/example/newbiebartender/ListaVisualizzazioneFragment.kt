@@ -128,11 +128,12 @@ open class ListaVisualizzazioneFragment : Fragment() {
                     } else {
                         idResultData.clear()
                         val searchString = constraint.toString()
-                                .toUpperCase(Locale.ROOT)
+
                         for (name in titoli) {
-                            if (name.toUpperCase(Locale.ROOT).startsWith(searchString)) {
+                            //if (name.toUpperCase(Locale.ROOT).startsWith(searchString)) {
+                            if(name.contains(searchString)){
                                 if (resultsData.contains(name)) {
-                                    if (binding.ricerca.length() == 0) results.values = titoli
+                                    if (binding.ricerca.toString().isBlank()) results.values = titoli
                                     resultsData.clear()
                                     break
                                 }
@@ -147,7 +148,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
                 }
 
                 override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                    listaFiltrata = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, resultsData)
+                    listaFiltrata = ArrayAdapter(requireContext(), R.layout.textviewlist, resultsData)
                     binding.listview.adapter = listaFiltrata
                     notifyDataSetChanged()
                     binding.listview.onItemClickListener =

@@ -102,11 +102,16 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     }
 
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg")
-                            .downloadUrl.addOnSuccessListener { uri ->
+                            .downloadUrl
+                            .addOnSuccessListener { uri ->
                                 val imageUrl = uri.toString()
+                                context.let{ Glide.with(requireContext()).load(imageUrl).into(binding.fotocock)}
+                            }
+
+                            .addOnFailureListener{ uri ->
                                 Glide.with(requireContext())
-                                        .load(imageUrl).into(binding.fotocock)
-                    }
+                                        .load(R.drawable.drink_default).into(binding.fotocock)
+                            }
                 }
             }
         }

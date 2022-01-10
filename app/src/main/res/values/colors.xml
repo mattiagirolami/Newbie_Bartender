@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="errore">#E83048</color>
     <color name="arancione_bello">#FA7E0A</color>
+    <color name="arancione_sfondo">#FFC085</color>
 </resources>

@@ -86,6 +86,26 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
                     checkFavourite(document)
 
+                    if (checkFavourite(document)){
+                        binding.showRecipeToolbar.menu.getItem(0)
+                            .setIcon(R.drawable.ic_full_star)
+                        binding.showRecipeToolbar.menu.getItem(0)
+                            .setOnMenuItemClickListener {
+                                removeFav()
+                                Toast.makeText(requireContext(), "Rimosso dai preferiti", Toast.LENGTH_SHORT).show()
+                                true
+                            }
+                    } else {
+                        binding.showRecipeToolbar.menu.getItem(0)
+                            .setIcon(R.drawable.ic_empty_star)
+                        binding.showRecipeToolbar.menu.getItem(0)
+                            .setOnMenuItemClickListener {
+                                addToFav()
+                                Toast.makeText(requireContext(), "Aggiunto ai preferiti", Toast.LENGTH_SHORT).show()
+                                true
+                            }
+                    }
+
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg")
                             .downloadUrl
                             .addOnSuccessListener { uri ->

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -29,7 +30,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     private lateinit var auth: FirebaseUser
 
+    var isRated: Boolean = false
+
     private var isFav = false
+
+    var valutazione : String? = null
 
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
@@ -59,6 +64,15 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         val view = binding.root
 
         setupToolbarWithNavigation()
+
+        binding.spinnerValutazione.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                valutazione = parent.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+        }
         
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
@@ -72,6 +86,9 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 val document = task.result
 
                 if (document!!.exists()) {
+
+                    binding.ratingTofill.text = calculateAvg(document).toString() + " su 5"
+
                     binding.nomeCockTw.text = document["titolo"].toString()
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
                     binding.procedimentoView.text = document["descrizione"].toString().capitalize()
@@ -87,7 +104,14 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     }
                     binding.ingredienti.text = ingreds
 
-                    checkFavourite(document)
+                    //checkRatings(document)
+                    if(checkRatings(document)){
+                        binding.btnSalvaValutazione.visibility = View.GONE
+                        binding.ratingTw.visibility = View.GONE
+                        binding.spinnerValutazione.visibility = View.GONE
+                    }
+
+                    //checkFavourite(document)
 
                     if (checkFavourite(document)){
                         binding.showRecipeToolbar.menu.getItem(0)
@@ -115,7 +139,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                                 val imageUrl = uri.toString()
                                 context.let{ Glide.with(requireContext()).load(imageUrl).into(binding.fotocock)}
                             }
-
                             .addOnFailureListener{ uri ->
                                 Glide.with(requireContext())
                                         .load(R.drawable.drink_default).into(binding.fotocock)
@@ -123,6 +146,18 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 }
             }
         }
+
+        binding.btnSalvaValutazione.setOnClickListener {
+            val mPacca: MutableMap<String, Any?> = HashMap()
+            mPacca["email"] = auth.email.toString()
+            mPacca["voto"] = valutazione
+            FirebaseFirestore.getInstance()
+                .collection(tipoCocktail!!)
+                .document(idRicetta!!)
+                .update("valutazioni", FieldValue.arrayUnion(mPacca))
+            Toast.makeText(context, "Hai inserito una valutazione di $valutazione/5", Toast.LENGTH_SHORT).show()
+        }
+
 
 
         return view
@@ -136,6 +171,32 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         }
     }
 
+
+    private fun calculateAvg(document: DocumentSnapshot) : Float {
+
+        var somma: Int = 0
+        var counter = 0
+
+        for(valutazione in document["valutazioni"] as ArrayList<HashMap<String, String>>){
+            somma += valutazione["voto"]!!.toInt()
+            counter++
+        }
+
+        return if (somma == 0) 0F
+        else (somma/counter).toFloat()
+
+    }
+
+    private fun checkRatings(document: DocumentSnapshot) : Boolean {
+
+        for(valutazione in document["valutazioni"] as ArrayList<HashMap<String, String>>){
+
+            if (valutazione["email"] == auth.email.toString()) isRated = true
+
+        }
+        return isRated
+
+    }
 
 
     private fun checkFavourite(document: DocumentSnapshot) : Boolean {

@@ -47,7 +47,7 @@
             tools:text="Titolo"
             android:textAlignment="gravity"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="28sp"
             android:textAllCaps="true"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/fotocock"
@@ -224,25 +224,36 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
+
             <Spinner
                 android:id="@+id/spinner_valutazione"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:entries="@array/valutazione_array"
-                android:layout_marginTop="-27dp"
-                android:layout_marginStart="280dp"
-                style="@style/Widget.AppCompat.Spinner"/>
+                android:layout_marginTop="10dp"
+                style= "@style/Widget.AppCompat.Spinner.Underlined"/>
+
+            <Button
+                android:id="@+id/btn_salvaValutazione"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-45dp"
+                android:layout_marginStart="100dp"
+                android:text="SALVA"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:shadowRadius="20" />
 
 
             <TextView
                 android:id="@+id/recipe_by_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="100dp"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                 app:layout_constraintTop_toBottomOf="@id/procedimento_view"
-                android:text="Autore"
-                android:textColor="@color/black"/>
+                tools:text="Autore"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
 
         </LinearLayout>
 

@@ -15,7 +15,6 @@ class StartScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start_screen)
 
         logo = findViewById(R.id.imageView_startScreen)
-        //TODO: è brutta, rivedere
         logo!!.animate().apply {
             duration = 1400
             rotationYBy(360f)

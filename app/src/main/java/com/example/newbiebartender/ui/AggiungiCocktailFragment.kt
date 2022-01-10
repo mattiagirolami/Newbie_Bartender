@@ -86,6 +86,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
         var preferiti: ArrayList<String> = arrayListOf()
 
+        var valutazioni: ArrayList<Map<String, *>> = ArrayList<Map<String, *>>()
+
 
         var ingredienti: ArrayList<String> = arrayListOf()
         var editorIngredienti = binding.ingrediente
@@ -121,6 +123,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["preferiti"] = preferiti
             ricettaMap["autore"] = user!!["username"].toString()
             ricettaMap["tipoRicetta"] = tipo_drink
+            ricettaMap["valutazioni"] = valutazioni
 
             val db = FirebaseFirestore.getInstance()
             db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {
@@ -187,11 +190,9 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        TODO("Not yet implemented")
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
     }
 
 }

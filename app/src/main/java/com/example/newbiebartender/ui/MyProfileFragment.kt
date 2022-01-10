@@ -118,19 +118,11 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 val user = FirebaseAuth.getInstance().currentUser
                 val psw = resetPassword.text.toString()
                 user!!.updatePassword(psw).addOnSuccessListener {
-                    Toast.makeText(
-                        context,
-                        "Password modificata correttamente.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context,"Password modificata correttamente.",Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
                     val mAuth = FirebaseAuth.getInstance()
                     Toast.makeText(context, "Password non modificata.", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(
-                        context,
-                        "Effettua nuovamente il login e riprova.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context,"Effettua nuovamente il login e riprova.",Toast.LENGTH_SHORT).show()
                     mAuth.signOut()
                     startActivity(Intent(context, LoginActivity::class.java))
                 }

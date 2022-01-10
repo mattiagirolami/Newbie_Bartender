@@ -21,9 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.newbiebartender.BuildConfig
-import com.example.newbiebartender.LoginActivity
-import com.example.newbiebartender.LoginPref
+import com.example.newbiebartender.*
 import com.example.newbiebartender.databinding.FragmentMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -68,9 +66,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                         val user = FirebaseAuth.getInstance().currentUser
                         if (user!!.email == document.id) {
                             id = document.id
-                            //email!!.setText(document.id)
                             binding.email.text = document.id
-                            //nomeutente!!.setText(document["username"].toString())
                             binding.nomeutente.text = document["username"].toString()
                             storageReference!!.child("images/$id.jpg").downloadUrl
                                 .addOnSuccessListener { uri ->
@@ -96,6 +92,15 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         binding.bottonemodifica.setOnClickListener { cambiaImmagine() }
 
         binding.scattafoto.setOnClickListener { chiediPermessiFotocamera() }
+
+        binding.gotoFavourites.setOnClickListener{
+
+            val fragment: FavouritesFragment = FavouritesFragment.newInstance()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction.addToBackStack(null)
+            transaction.add(R.id.favouriteCocktailFragment, fragment, "FAVOURITECOCKTAIL_FRAGMENT").commit()
+        }
 
         binding.modificaPassword.setOnClickListener { v ->
             val resetPassword = EditText(v.context)
@@ -213,6 +218,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
 
     companion object {
         const val CAMERA_PERM_CODE = 101
+
     }
 
 }

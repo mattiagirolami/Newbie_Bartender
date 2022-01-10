@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import com.example.newbiebartender.databinding.FragmentFavBinding
+import com.google.firebase.auth.FirebaseUser
 
 
 class FavFragment : Fragment() {
@@ -15,8 +16,10 @@ class FavFragment : Fragment() {
     private lateinit var binding: FragmentFavBinding
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
+    private lateinit var auth: FirebaseUser
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         binding = FragmentFavBinding.inflate(inflater, container, false)
 

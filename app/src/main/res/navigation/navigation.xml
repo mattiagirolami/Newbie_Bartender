@@ -41,7 +41,14 @@
     <fragment
         android:id="@+id/visualizzaRicettaCocktail_frag"
         android:name="com.example.newbiebartender.ui.VisualizzaRicettaFragment"
-        android:label="Recipe"
+        android:label="Ricetta"
         tools:layout="@layout/fragment_visualizza_ricetta"/>
+
+    <fragment
+        android:id="@+id/favouriteCocktailFragment"
+        android:name="com.example.newbiebartender.FavouritesFragment"
+        android:label="Preferiti"
+        tools:layout="@layout/fragment_favourites" />
+
 
 </navigation>

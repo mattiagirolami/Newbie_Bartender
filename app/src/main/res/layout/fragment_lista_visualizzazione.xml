@@ -10,14 +10,14 @@
     <EditText
         android:id="@+id/ricerca"
         android:layout_marginTop="0dp"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:inputType="text"
         android:textSize="25sp"
         android:textStyle="normal"
-        android:background="@drawable/edittext"
+        android:background="@color/arancione_bello"
         android:drawableStart="@drawable/ic_search"
         android:hint=" Ricerca"
         android:textColorHint="#FFFFFF"
@@ -31,7 +31,7 @@
         android:scrollbars="vertical"
         android:gravity="center_horizontal"
         android:padding="5dp"
-        android:dividerHeight="3dp"
+        android:dividerHeight="7dp"
         android:divider="@color/browser_actions_bg_grey"
         />
 

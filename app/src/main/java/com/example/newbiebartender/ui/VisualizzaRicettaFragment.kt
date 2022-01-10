@@ -68,8 +68,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 if (document!!.exists()) {
                     binding.nomeCockTw.text = document["titolo"].toString()
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
-                    binding.procedimentoView.text = document["descrizione"].toString()
-                    binding.tipologiaTofill.text = tipoCocktail.toString()
+                    binding.procedimentoView.text = document["descrizione"].toString().capitalize()
+                    binding.tipologiaTofill.text = tipoCocktail.toString().capitalize()
                     binding.recipeByUser.text = "Ricetta di ${document["autore"].toString()}"
 
                     val arrayIngr = document["ingredienti"] as ArrayList<String>?
@@ -101,9 +101,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                                 }
                     }
 
-                    storageReference!!.child("$tipoCocktail/$idRicetta.jpg").downloadUrl.addOnSuccessListener { uri ->
-                        val imageUrl = uri.toString()
-                        Glide.with(requireContext()).load(imageUrl).into(binding.fotocock)
+                    storageReference!!.child("$tipoCocktail/$idRicetta.jpg")
+                            .downloadUrl.addOnSuccessListener { uri ->
+                                val imageUrl = uri.toString()
+                                Glide.with(requireContext())
+                                        .load(imageUrl).into(binding.fotocock)
                     }
                 }
             }
@@ -126,10 +128,9 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     private fun addToFav() {
 
         isFav = true
-
         FirebaseFirestore.getInstance()
                 .collection(tipoCocktail!!)
-                .document(id!!)
+                .document(idRicetta!!)
                 .update("preferiti", FieldValue.arrayUnion(auth.email.toString()))
 
     }
@@ -139,7 +140,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
         FirebaseFirestore.getInstance()
                 .collection(tipoCocktail!!)
-                .document(id!!)
+                .document(idRicetta!!)
                 .update("preferiti", FieldValue.arrayRemove(auth.email.toString()))
 
     }

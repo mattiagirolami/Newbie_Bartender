@@ -38,15 +38,6 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
     var auth = FirebaseAuth.getInstance().currentUser
 
-    /*FirebaseFirestore.getInstance().collection("users").document(auth!!.email!!)
-    .get().addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                     username = task.result
-                }
-            }
-
-     */
-
     var tipologia: String? = null
     lateinit var tipo_drink: String
 
@@ -92,6 +83,10 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             }
         }
 
+
+        var preferiti: ArrayList<String> = arrayListOf()
+
+
         var ingredienti: ArrayList<String> = arrayListOf()
         var editorIngredienti = binding.ingrediente
         binding.buttonAggiugniIng.setOnClickListener { view ->
@@ -123,6 +118,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["difficoltà"] = difficolta
             ricettaMap["ingredienti"] = ingredienti
             ricettaMap["descrizione"] = descrizione
+            ricettaMap["preferiti"] = preferiti
             ricettaMap["autore"] = user!!["username"].toString()
             val db = FirebaseFirestore.getInstance()
             db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {

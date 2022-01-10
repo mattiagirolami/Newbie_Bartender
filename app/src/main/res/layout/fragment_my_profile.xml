@@ -63,7 +63,7 @@
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
             android:hint="Username"
             android:textColorHint="@color/black"
             android:textAlignment="center"
@@ -85,15 +85,28 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/modifica_password"
+            android:id="@+id/goto_favourites"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:background="@drawable/button_modificausername"
+            android:text="PREFERITI"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/modifica_password"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_modificausername"
             android:text="MODIFICA PASSWORD"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
+
+
 
     </LinearLayout>
 </layout>

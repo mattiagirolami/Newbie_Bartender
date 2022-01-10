@@ -32,7 +32,6 @@ open class ListaVisualizzazioneFragment : Fragment() {
     open var tipoCocktail: String? = null
 
     open var titolo: String? = null
-    //open var titolo: TextView? = null
 
     var id: String? = null
     var idRecipe: String? = null
@@ -95,9 +94,6 @@ open class ListaVisualizzazioneFragment : Fragment() {
         transaction.add(R.id.visualizzaCocktailFragment, fragment, "VISUALIZZARECIPE_FRAGMENT").commit()
     }
 
-    interface OnFragmentInteractionListener {
-        //fun OnFragmentInteractionListener(backText: String?)
-    }
 
     inner class ListAdapter(var context: Context?) : BaseAdapter(), Filterable {
         override fun getCount(): Int {

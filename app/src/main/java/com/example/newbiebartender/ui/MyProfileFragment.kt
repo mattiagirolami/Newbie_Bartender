@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.*
 import com.example.newbiebartender.databinding.FragmentMyProfileBinding
@@ -94,18 +95,9 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         binding.scattafoto.setOnClickListener { chiediPermessiFotocamera() }
 
         binding.gotoFavourites.setOnClickListener{
+            binding.root.findNavController()
+                    .navigate(R.id.action_navigation_profile_to_favouriteCocktailFragment_)
 
-            /*val fragmentManager = requireActivity().supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.addToBackStack(null)
-            transaction.add(R.id.favouriteCocktailFragment, FavouritesFragment(), "FAVOURITECOCKTAIL_FRAGMENT").commit()
-             */
-
-            val fragment: FavouritesFragment = FavouritesFragment.newInstance(11, "analcolico")
-            val fragmentManager = requireActivity().supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.addToBackStack(null)
-            transaction.add(R.id.favouriteCocktailFragment, fragment, "VISUALIZZARECIPE_FRAGMENT").commit()
         }
 
         binding.modificaPassword.setOnClickListener { v ->

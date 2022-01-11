@@ -52,7 +52,11 @@
         android:id="@+id/favouriteCocktailFragment_"
         android:name="com.example.newbiebartender.FavouritesFragment"
         android:label="Preferiti"
-        tools:layout="@layout/fragment_favourites" />
+        tools:layout="@layout/fragment_favourites" >
+        <action
+            android:id="@+id/action_favouriteCocktailFragment__to_visualizzaRicettaCocktail_frag"
+            app:destination="@id/visualizzaRicettaCocktail_frag" />
+    </fragment>
 
 
 </navigation>

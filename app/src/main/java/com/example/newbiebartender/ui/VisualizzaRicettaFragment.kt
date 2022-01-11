@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
@@ -112,7 +114,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     }
 
                     //checkFavourite(document)
-
                     if (checkFavourite(document)){
                         binding.showRecipeToolbar.menu.getItem(0)
                             .setIcon(R.drawable.ic_full_star)

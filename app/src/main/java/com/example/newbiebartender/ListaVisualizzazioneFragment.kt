@@ -1,16 +1,13 @@
 package com.example.newbiebartender
 
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.inflate
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.BaseAdapter
-import android.widget.TextView
-import android.widget.Toolbar
+import android.widget.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.newbiebartender.databinding.FragmentListaVisualizzazioneBinding
@@ -23,6 +20,9 @@ open class ListaVisualizzazioneFragment : Fragment() {
     open var db: FirebaseFirestore? = null
     var listAdapter: ListAdapter = ListAdapter(this.context)
     var titoli = ArrayList<String>()
+
+    var cocktailsList = ArrayList<String>()
+    var displayList = ArrayList<String>()
 
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
@@ -43,7 +43,9 @@ open class ListaVisualizzazioneFragment : Fragment() {
         if(arguments!=null){
             tipoCocktail = requireArguments().getString("tipoCocktail")
         }
+
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -67,6 +69,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
                         id = doc.id
                         titoli.add(titolo!!)
                         idL.add(id!!)
+
                     }
                     binding.listview.adapter = listAdapter
                 } else {

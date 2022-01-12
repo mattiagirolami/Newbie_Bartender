@@ -22,16 +22,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-
-
 class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
 
-    private  var _binding: FragmentAggiungiCocktailBinding? = null
+    private var _binding: FragmentAggiungiCocktailBinding? = null
     private val binding get() = _binding!!
 
-    var storage: FirebaseStorage?= null
-    private var storageReference: StorageReference ?= null
+    var storage: FirebaseStorage? = null
+    private var storageReference: StorageReference? = null
     var id = GenerateRandomString.randomString(20)
     var imageUri: Uri? = null
     var difficolta: String? = null
@@ -54,7 +52,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
         FirebaseFirestore.getInstance().collection("users")
                 .document(auth!!.email!!).get().addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
+                    if (task.isSuccessful) {
                         user = task.result
                     }
                 }
@@ -102,7 +100,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
 
             val titoloString = binding.nomeCocktailEditText.text.toString().trim()
 
-            val descrizione  = binding.editTextTextMultiline.text.toString().trim()
+            val descrizione = binding.editTextTextMultiline.text.toString().trim()
 
             if (titoloString.isEmpty()) {
                 if (ingredienti.isEmpty()) {
@@ -127,14 +125,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["mediaValutazioni"] = 0.0
 
             val db = FirebaseFirestore.getInstance()
-            /*
-            db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {
-                Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
-                val back = Intent(context, Navigation::class.java)
-                startActivity(back)
-            }.addOnFailureListener { Toast.makeText(context, "Ricetta non salvata", Toast.LENGTH_SHORT).show() }
 
-             */
             db.collection("cocktail").document(id).set(ricettaMap).addOnSuccessListener {
                 Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
                 val back = Intent(context, Navigation::class.java)
@@ -154,8 +145,6 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
     }
 
 
-
-
     private fun cambiaImmagine() {
         val intent = Intent()
         intent.type = "image/*"
@@ -169,11 +158,11 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         pd.show()
         val imageRef = storageReference!!.child("$tipo_drink/$id.jpg")
         imageRef.putFile(imageUri!!)
-            .addOnSuccessListener { pd.dismiss() }
-            .addOnFailureListener {
-                pd.dismiss()
-                Toast.makeText(context, "Impossibile caricare immagine", Toast.LENGTH_SHORT).show()
-            }
+                .addOnSuccessListener { pd.dismiss() }
+                .addOnFailureListener {
+                    pd.dismiss()
+                    Toast.makeText(context, "Impossibile caricare immagine", Toast.LENGTH_SHORT).show()
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

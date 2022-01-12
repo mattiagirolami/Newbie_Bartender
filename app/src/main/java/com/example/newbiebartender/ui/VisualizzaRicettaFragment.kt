@@ -27,24 +27,19 @@ import kotlin.collections.HashMap
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     private var storageReference: StorageReference ?= null
-
     private lateinit var auth: FirebaseUser
-
     var isRated: Boolean = false
-
     private var isFav = false
-
     var valutazione : String? = null
-
     override var db: FirebaseFirestore? = null
     var storage: FirebaseStorage? = null
     override var titolo: String? = null
     var docref: DocumentReference? = null
     var idRicetta: String? = null
     override var tipoCocktail: String? = null
-
     private  var _binding: FragmentVisualizzaRicettaBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,11 +73,9 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
 
-        //docref = db!!.collection(tipoCocktail!!).document(idRicetta!!)
         docref = db!!.collection("cocktail").document(idRicetta!!)
 
-        docref!!.get()
-                .addOnCompleteListener { task ->
+        docref!!.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
 
                 val document = task.result
@@ -105,14 +98,12 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     }
                     binding.ingredienti.text = ingreds
 
-                    //checkRatings(document)
                     if(checkRatings(document)){
                         binding.btnSalvaValutazione.visibility = View.GONE
                         binding.ratingTw.visibility = View.GONE
                         binding.spinnerValutazione.visibility = View.GONE
                     }
 
-                    //checkFavourite(document)
                     if (checkFavourite(document)){
                         binding.showRecipeToolbar.menu.getItem(0)
                             .setIcon(R.drawable.ic_full_star)
@@ -227,14 +218,4 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     }
 
-    companion object {
-        fun newInstance(idRicetta: String?, tipoCocktail: String?): VisualizzaRicettaFragment {
-            val fragment = VisualizzaRicettaFragment()
-            val args = Bundle()
-            args.putString("idRicetta", idRicetta)
-            args.putString("tipoCocktail", tipoCocktail)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

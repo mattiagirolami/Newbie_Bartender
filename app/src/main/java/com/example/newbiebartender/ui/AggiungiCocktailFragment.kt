@@ -124,6 +124,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["autore"] = user!!["username"].toString()
             ricettaMap["tipoRicetta"] = tipo_drink
             ricettaMap["valutazioni"] = valutazioni
+            ricettaMap["mediaValutazioni"] = 0.0
 
             val db = FirebaseFirestore.getInstance()
             /*

@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
@@ -23,13 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
-
-    //TODO: vedere se unificare tutti i cocktail sotto un'unica cartella su firebase
 
     private var storageReference: StorageReference ?= null
 
@@ -177,14 +172,21 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
         var somma: Int = 0
         var counter = 0
+        var media = 0F
 
         for(valutazione in document["valutazioni"] as ArrayList<HashMap<String, String>>){
             somma += valutazione["voto"]!!.toInt()
             counter++
         }
 
-        return if (somma == 0) 0F
+        media = if(somma == 0) 0F
         else (somma/counter).toFloat()
+
+        FirebaseFirestore.getInstance().collection("cocktail")
+                .document(idRicetta!!)
+                .update("mediaValutazioni", media)
+
+        return media
 
     }
 

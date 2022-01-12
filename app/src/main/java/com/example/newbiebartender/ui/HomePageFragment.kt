@@ -5,38 +5,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.example.newbiebartender.ListaVisualizzazioneFragment
 import com.example.newbiebartender.R
+import com.example.newbiebartender.databinding.FragmentHomePageBinding
 
 
 class HomePageFragment : Fragment() {
 
-    var analcolici: CardView ?= null
-    var alcolici: CardView ?= null
+    private lateinit var binding: FragmentHomePageBinding
+
+    var tipoCocktail : String ?= null
+    var analcolico = "analcolico"
+    var alcolico = "alcolico"
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_home_page, container, false)
-        analcolici = root.findViewById(R.id.analcolicoCard)
-        alcolici = root.findViewById(R.id.alcoliciCard)
-        analcolici!!.setOnClickListener { openFragment("analcolico") }
-        //analcolici!!.setOnClickListener {Navigation.findNavController(requireView()).navigate(R.id.listaVisualizzazioneanalcolici_frag)}
-        alcolici!!.setOnClickListener { openFragment("alcolico") }
-        return root
-    }
+        binding = FragmentHomePageBinding.inflate(inflater, container, false)
 
 
-    /*
-    override fun onClick(view: View){
-        Navigation.findNavController(view).navigate(R.id.visualizzaCocktailFragment)
-    }*/
+        binding.analcolicoCard.setOnClickListener {
+            val bundle = bundleOf("tipoCocktail" to analcolico)
+            binding.root.findNavController().navigate(R.id.action_navigation_homepage_to_listaVisualizzazione_frag, bundle)
 
-    private fun openFragment(tipoCocktail: String?) {
-        val fragment: ListaVisualizzazioneFragment = ListaVisualizzazioneFragment.newInstance(tipoCocktail)
-        val fragmentManager = requireActivity().supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.addToBackStack(null)
-        transaction.add(R.id.listaVisualizzazione, fragment, "LISTAVISUALIZZAZIONE FRAGMENT").commit()
+        }
+
+        binding.alcoliciCard.setOnClickListener {
+            val bundle = bundleOf("tipoCocktail" to alcolico)
+            binding.root.findNavController().navigate(R.id.action_navigation_homepage_to_listaVisualizzazione_frag, bundle)
+        }
+        return binding.root
     }
 
 }

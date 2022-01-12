@@ -71,6 +71,7 @@ class FavouritesFragment : Fragment() {
                             tipologia.add(tipoloString!!)
                         }
                         binding.listviewFavourites.adapter = listAdapter
+
                     } else {
                         val intent = Intent(this.context, MyProfileFragment::class.java)
                         startActivity(intent)

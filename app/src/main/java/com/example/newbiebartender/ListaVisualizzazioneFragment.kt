@@ -59,7 +59,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
         setupToolbarWithNavigation()
 
-        //TODO: Aggiungere immagine agli elementi della lista
+        /*TODO: Aggiungere immagine agli elementi della lista
         db!!.collection(tipoCocktail!!)
             .get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -69,7 +69,6 @@ open class ListaVisualizzazioneFragment : Fragment() {
                         id = doc.id
                         titoli.add(titolo!!)
                         idL.add(id!!)
-
                     }
                     binding.listview.adapter = listAdapter
                 } else {
@@ -77,6 +76,24 @@ open class ListaVisualizzazioneFragment : Fragment() {
                     startActivity(intent)
                 }
             }
+
+         */
+
+        db!!.collection("cocktail").whereEqualTo("tipoRicetta", tipoCocktail!!)
+                .get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        for (doc in task.result!!) {
+                            titolo = doc["titolo"] as String?
+                            id = doc.id
+                            titoli.add(titolo!!)
+                            idL.add(id!!)
+                        }
+                        binding.listview.adapter = listAdapter
+                    } else {
+                        val intent = Intent(this.context, MyProfileFragment::class.java)
+                        startActivity(intent)
+                    }
+                }
 
         binding.listview.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             idRecipe = idL[position]

@@ -27,7 +27,6 @@ class FavouritesFragment : Fragment() {
     private lateinit var auth: FirebaseUser
 
     var listAdapter: ListAdapter = ListAdapter(this.context)
-    var listAdapterAnalcolico : ListAdapterAnalcolico = ListAdapterAnalcolico(this.context)
     var titoli = ArrayList<String>()
     var idList = ArrayList<String>()
 
@@ -38,49 +37,29 @@ class FavouritesFragment : Fragment() {
 
     var titolo: String? = null
     var id: String? = null
-    var idRecipe: String? = null
-    var tipoCocktail: String? = null
-
-    var count = 0
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+
         binding = FragmentFavouritesBinding.inflate(inflater, container, false)
 
         setupTBwithNavigation()
 
         auth = FirebaseAuth.getInstance().currentUser!!
 
-        showAlcolico()
-        showAnalcolico()
+        showPreferiti()
 
         binding.listviewFavourites.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
-
-
-            /*idRecipe = idList[position]
-            val tipoRicetta = tipologia[position]
-            openFragment(idRecipe!!, tipoRicetta)
-             */
-
-            //fragmentManager?.beginTransaction()?.remove(FavouritesFragment())?.commitAllowingStateLoss()
-
-                val bundle = bundleOf("idRicetta" to idList[position], "tipoCocktail" to tipologia[position])
-                binding.root.findNavController()
-                        .navigate(R.id.action_favouriteCocktailFragment__to_visualizzaRicettaCocktail_frag, bundle)
-
-
+            val bundle = bundleOf("idRicetta" to idList[position], "tipoCocktail" to tipologia[position])
+            binding.root.findNavController().navigate(R.id.action_favouriteCocktailFragment__to_visualizzaRicettaCocktail_frag, bundle)
         }
 
         return binding.root
     }
 
+    private fun showPreferiti() {
 
-    private fun showAlcolico() {
-
-        var count = 0
-
-        db.collection("alcolico").whereArrayContains("preferiti", auth.email!!.toString())
+        db.collection("cocktail").whereArrayContains("preferiti", auth.email!!.toString())
                 .get().addOnCompleteListener { task ->
                     if(task.isSuccessful) {
                         for(doc in task.result!!) {
@@ -88,10 +67,8 @@ class FavouritesFragment : Fragment() {
                             id = doc.id
                             titoli.add(titolo!!)
                             idList.add(id!!)
-
                             tipoloString = doc["tipoRicetta"] as String
                             tipologia.add(tipoloString!!)
-                            count ++
                         }
                         binding.listviewFavourites.adapter = listAdapter
                     } else {
@@ -99,24 +76,6 @@ class FavouritesFragment : Fragment() {
                         startActivity(intent)
                     }
                 }
-    }
-
-    private fun showAnalcolico() {
-        db.collection("analcolico").whereArrayContains("preferiti", auth.email!!.toString())
-                .get().addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        for(doc in task.result!!) {
-                            titolo = doc["titolo"] as String?
-                            id = doc.id
-                            titoli.add(titolo!!)
-                            idList.add(id!!)
-                        }
-                        binding.listviewFavourites.adapter = listAdapterAnalcolico
-                    } else {
-                        val intent = Intent(this.context, MyProfileFragment::class.java)
-                        startActivity(intent)
-                    }
-        }
     }
 
     private fun setupTBwithNavigation() {
@@ -145,28 +104,6 @@ class FavouritesFragment : Fragment() {
             titoloCocktail.text = titoli[position]
             return view
         }
-    }
-
-    inner class ListAdapterAnalcolico (var context: Context?) : BaseAdapter(){
-        override fun getCount(): Int {
-            return titoli.size
-        }
-
-        override fun getItem(position: Int): Any {
-            return titoli[position+ListAdapter(context).count]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val view = inflate(getContext(), R.layout.textviewlist, null)
-            val titoloCocktail = view.findViewById<TextView>(R.id.titoloCocktail)
-            titoloCocktail.text = titoli[position]
-            return view
-        }
-
     }
 
 }

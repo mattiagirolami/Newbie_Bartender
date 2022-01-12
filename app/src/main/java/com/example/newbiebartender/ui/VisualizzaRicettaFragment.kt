@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
@@ -80,21 +83,22 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
 
-        docref = db!!.collection(tipoCocktail!!).document(idRicetta!!)
+        //docref = db!!.collection(tipoCocktail!!).document(idRicetta!!)
+        docref = db!!.collection("cocktail").document(idRicetta!!)
 
         docref!!.get()
                 .addOnCompleteListener { task ->
             if (task.isSuccessful) {
+
                 val document = task.result
 
                 if (document!!.exists()) {
 
                     binding.ratingTofill.text = calculateAvg(document).toString() + " su 5"
-
                     binding.nomeCockTw.text = document["titolo"].toString()
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
-                    binding.procedimentoView.text = document["descrizione"].toString().capitalize()
-                    binding.tipologiaTofill.text = tipoCocktail.toString().capitalize()
+                    binding.procedimentoView.text = document["descrizione"].toString().capitalize(Locale.ROOT)
+                    binding.tipologiaTofill.text = tipoCocktail.toString().capitalize(Locale.ROOT)
                     binding.recipeByUser.text = "Ricetta di ${document["autore"].toString()}"
 
                     val arrayIngr = document["ingredienti"] as ArrayList<String>?
@@ -152,18 +156,15 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             val mPacca: MutableMap<String, Any?> = HashMap()
             mPacca["email"] = auth.email.toString()
             mPacca["voto"] = valutazione
-            FirebaseFirestore.getInstance()
-                .collection(tipoCocktail!!)
+            //.collection(tipoCocktail!!)
+            FirebaseFirestore.getInstance().collection("cocktail")
                 .document(idRicetta!!)
                 .update("valutazioni", FieldValue.arrayUnion(mPacca))
             Toast.makeText(context, "Hai inserito una valutazione di $valutazione/5", Toast.LENGTH_SHORT).show()
         }
 
-
-
         return view
     }
-
 
     private fun setupToolbarWithNavigation() {
         val toolbar = binding.showRecipeToolbar
@@ -171,7 +172,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             findNavController().navigateUp()
         }
     }
-
 
     private fun calculateAvg(document: DocumentSnapshot) : Float {
 
@@ -189,16 +189,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     }
 
     private fun checkRatings(document: DocumentSnapshot) : Boolean {
-
         for(valutazione in document["valutazioni"] as ArrayList<HashMap<String, String>>){
-
             if (valutazione["email"] == auth.email.toString()) isRated = true
-
         }
         return isRated
-
     }
-
 
     private fun checkFavourite(document: DocumentSnapshot) : Boolean {
 
@@ -214,7 +209,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
         isFav = true
         FirebaseFirestore.getInstance()
-                .collection(tipoCocktail!!)
+                .collection("cocktail")
                 .document(idRicetta!!)
                 .update("preferiti", FieldValue.arrayUnion(auth.email.toString()))
 
@@ -224,12 +219,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         isFav = false
 
         FirebaseFirestore.getInstance()
-                .collection(tipoCocktail!!)
+                .collection("cocktail")
                 .document(idRicetta!!)
                 .update("preferiti", FieldValue.arrayRemove(auth.email.toString()))
 
     }
-
 
     companion object {
         fun newInstance(idRicetta: String?, tipoCocktail: String?): VisualizzaRicettaFragment {

@@ -126,11 +126,23 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["valutazioni"] = valutazioni
 
             val db = FirebaseFirestore.getInstance()
+            /*
             db.collection(tipo_drink).document(id).set(ricettaMap).addOnSuccessListener {
                 Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
                 val back = Intent(context, Navigation::class.java)
                 startActivity(back)
             }.addOnFailureListener { Toast.makeText(context, "Ricetta non salvata", Toast.LENGTH_SHORT).show() }
+
+             */
+            db.collection("cocktail").document(id).set(ricettaMap).addOnSuccessListener {
+                Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
+                val back = Intent(context, Navigation::class.java)
+                startActivity(back)
+            }.addOnFailureListener {
+                Toast.makeText(context, "Ricetta non salvata", Toast.LENGTH_SHORT).show()
+            }
+
+
         })
         return view
     }

@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newbiebartender.databinding.FragmentStatsBinding
 import com.google.firebase.firestore.*
 
-class StatsFragment : Fragment() {
+class StatsFragment : Fragment(), MyAdapter.OnItemClickListener {
 
     //private lateinit var recyclerView: RecyclerView
     private lateinit var cocktailArrayList : ArrayList<CocktailModel>
@@ -37,7 +40,7 @@ class StatsFragment : Fragment() {
 
         cocktailArrayList = arrayListOf()
 
-        myAdapter = MyAdapter(requireContext(), cocktailArrayList)
+        myAdapter = MyAdapter(requireContext(), cocktailArrayList, this)
 
         binding.myRecyclerView.adapter = myAdapter
 
@@ -69,6 +72,16 @@ class StatsFragment : Fragment() {
                     myAdapter.notifyDataSetChanged()
                 }
             })
+    }
+
+    override fun onItemClick(position: Int) {
+        val clickedItem = cocktailArrayList[position]
+        var id = clickedItem.id
+        var tipoCocktail = clickedItem.tipoRicetta
+        var bundle = bundleOf("idRicetta" to id, "tipoCocktail" to tipoCocktail)
+        binding.root.findNavController().navigate(R.id.action_navigation_stats_to_visualizzaRicettaCocktail_frag, bundle)
+
+
     }
 
 }

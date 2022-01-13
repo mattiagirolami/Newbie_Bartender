@@ -18,7 +18,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 
-class MyAdapter(private var context: Context, private val cocktailList: ArrayList<CocktailModel>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
+class MyAdapter(private var context: Context,
+                private val cocktailList: ArrayList<CocktailModel>,
+                private val listener: OnItemClickListener)
+    : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 
     private lateinit var storageReference : StorageReference
 
@@ -62,15 +65,27 @@ class MyAdapter(private var context: Context, private val cocktailList: ArrayLis
         return cocktailList.size
     }
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         val titolo: TextView = itemView.findViewById(R.id.post_title)
         val autore: TextView = itemView.findViewById(R.id.post_byuser)
         val immagine: ImageView = itemView.findViewById(R.id.post_image)
         val ratingBar: RatingBar = itemView.findViewById(R.id.post_rating_bar)
 
+        init {
+            itemView.setOnClickListener(this)
+        }
 
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION){
+                listener.onItemClick(position)
+            }
+        }
+    }
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 
 }

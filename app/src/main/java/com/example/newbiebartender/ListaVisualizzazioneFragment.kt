@@ -95,9 +95,6 @@ open class ListaVisualizzazioneFragment : Fragment() {
                             idL.add(id!!)
                         }
                         binding.listview.adapter = listAdapter
-                    } else {
-                        val intent = Intent(this.context, MyProfileFragment::class.java)
-                        startActivity(intent)
                     }
                 }
 
@@ -144,33 +141,28 @@ open class ListaVisualizzazioneFragment : Fragment() {
 
                 override fun performFiltering(constraint: CharSequence?): FilterResults {
 
+                    val searchString = constraint.toString()
                     val results = FilterResults()
 
-                    if (constraint.isNullOrBlank()) {
+                    if (searchString.isEmpty()) {
                         results.values = titoli
                         results.count = resultsData.size
                         resultsData.clear()
                         resultsData.addAll(titoli)
                     } else {
                         idResultData.clear()
-                        val searchString = constraint.toString()
 
                         for (name in titoli) {
-                            //if (name.toUpperCase(Locale.ROOT).startsWith(searchString)) {
-                            if(name.startsWith(searchString)){
-
-                                if (resultsData.contains(name)) {
-                                    if (binding.ricerca.toString().isBlank()) results.values = titoli
-                                    resultsData.clear()
-                                    break
-                                }
+                            if(name.toLowerCase().contains(searchString.toLowerCase())){
                                 resultsData.add(name)
                                 idResultData.add(idL[titoli.indexOf(name)])
                                 results.values = name
                                 results.count = resultsData.size
                             }
                         }
+
                     }
+                    results.values =
                     return results
                 }
 
@@ -222,13 +214,4 @@ open class ListaVisualizzazioneFragment : Fragment() {
         }
     }*/
 
-    companion object {
-        fun newInstance(tipoCocktail: String?) : ListaVisualizzazioneFragment  {
-            val fragment = ListaVisualizzazioneFragment()
-            val args = Bundle()
-            args.putString("tipoCocktail", tipoCocktail)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

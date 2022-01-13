@@ -50,6 +50,7 @@
             android:numStars="5"
             android:progressTint="#ffff00"
             android:backgroundTint="@color/browser_actions_bg_grey"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:stepSize="0.1" />
 
     </LinearLayout>

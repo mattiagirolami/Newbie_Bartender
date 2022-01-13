@@ -15,7 +15,7 @@ class Navigation : AppCompatActivity () {
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
         val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.navigation_homepage, R.id.navigation_add, R.id.navigation_profile).build()
+            R.id.navigation_stats, R.id.navigation_homepage, R.id.navigation_add, R.id.navigation_profile).build()
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(navView, navController)
     }

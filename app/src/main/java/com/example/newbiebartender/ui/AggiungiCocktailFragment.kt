@@ -114,6 +114,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             }
 
             val ricettaMap: MutableMap<String, Any?> = HashMap()
+            ricettaMap["id"] = id
             ricettaMap["titolo"] = titoloString
             ricettaMap["difficoltà"] = difficolta
             ricettaMap["ingredienti"] = ingredienti

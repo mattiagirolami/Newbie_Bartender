@@ -6,9 +6,15 @@
     app:startDestination="@+id/navigation_homepage">
 
     <fragment
+        android:id="@+id/navigation_stats"
+        android:name="com.example.newbiebartender.StatsFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_stats" />
+
+    <fragment
         android:id="@+id/navigation_homepage"
         android:name="com.example.newbiebartender.ui.HomePageFragment"
-        android:label="Home"
+        android:label="Lista Cocktail"
         tools:layout="@layout/fragment_home_page">
         <action
             android:id="@+id/action_navigation_homepage_to_listaVisualizzazione_frag"

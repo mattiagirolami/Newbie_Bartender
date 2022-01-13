@@ -40,6 +40,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     private  var _binding: FragmentVisualizzaRicettaBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var documentSnapshot : DocumentSnapshot
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +84,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
                 if (document!!.exists()) {
 
+                    documentSnapshot = document
                     binding.ratingTofill.text = calculateAvg(document).toString() + " su 5"
                     binding.nomeCockTw.text = document["titolo"].toString()
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
@@ -147,6 +150,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 .document(idRicetta!!)
                 .update("valutazioni", FieldValue.arrayUnion(mPacca))
             Toast.makeText(context, "Hai inserito una valutazione di $valutazione/5", Toast.LENGTH_SHORT).show()
+
+            calculateAvg(documentSnapshot)
         }
 
         return view

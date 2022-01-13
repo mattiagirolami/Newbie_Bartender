@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.newbiebartender.ListaVisualizzazioneFragment
 import com.example.newbiebartender.R
 import com.example.newbiebartender.databinding.FragmentHomePageBinding
 
@@ -17,12 +15,10 @@ class HomePageFragment : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
 
-    var tipoCocktail : String ?= null
     var analcolico = "analcolico"
     var alcolico = "alcolico"
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
 
 

@@ -113,7 +113,8 @@ open class ListaVisualizzazioneFragment : Fragment() {
     private fun setupToolbarWithNavigation() {
         toolbar = binding.listaToolbar
         toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            val bundle = bundleOf("tipoCocktail" to tipoCocktail)
+            findNavController().navigate(R.id.action_listaVisualizzazione_frag_to_navigation_homepage, bundle)
         }
     }
 

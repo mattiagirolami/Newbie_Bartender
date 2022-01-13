@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="10dp"
     android:layout_margin="7dp"
     android:elevation="90dp"
     tools:context=".StatsFragment">
@@ -42,14 +42,15 @@
         <RatingBar
             android:id="@+id/post_rating_bar"
             android:layout_width="wrap_content"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginTop="-50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="-60dp"
+            android:layout_marginEnd="10dp"
             android:isIndicator="true"
-            android:progressTint="#ffff00"
             android:numStars="5"
-            android:stepSize="0.1"/>
+            android:progressTint="#ffff00"
+            android:backgroundTint="@color/browser_actions_bg_grey"
+            android:stepSize="0.1" />
 
     </LinearLayout>
 

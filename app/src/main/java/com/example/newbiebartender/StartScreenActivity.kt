@@ -28,7 +28,4 @@ class StartScreenActivity : AppCompatActivity() {
         }, 1500)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
 }

@@ -25,12 +25,12 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
         tools:context=".ui.HomePageFragment">
-
 
         <androidx.cardview.widget.CardView
             android:id="@+id/analcolicoCard"

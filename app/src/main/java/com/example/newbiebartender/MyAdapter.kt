@@ -1,12 +1,17 @@
 package com.example.newbiebartender
 
 import android.content.Context
+import android.content.Intent
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
@@ -24,13 +29,10 @@ class MyAdapter(private var context: Context, private val cocktailList: ArrayLis
             .inflate(R.layout.stats_row, parent, false)
 
         return MyViewHolder(itemView)
-
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-
-        //TODO: mettere foto
         val cocktail: CocktailModel = cocktailList[position]
         holder.titolo.text = cocktail.titolo
         holder.autore.text = "Ricetta di ${cocktail.autore}"
@@ -43,11 +45,15 @@ class MyAdapter(private var context: Context, private val cocktailList: ArrayLis
                 cocktail.immagine = uri.toString()
             }
 
-        if(cocktail.immagine == null) {
-            holder.immagine.setImageResource(R.drawable.drink_default)
-        } else {
-            Glide.with(context).load(cocktail.immagine).into(holder.immagine)
-        }
+        Handler().postDelayed({
+
+            if(cocktail.immagine == null) {
+                holder.immagine.setImageResource(R.drawable.drink_default)
+            } else {
+                Glide.with(context).load(cocktail.immagine).into(holder.immagine)
+            }
+        }, 10000)
+
 
 
     }
@@ -56,7 +62,7 @@ class MyAdapter(private var context: Context, private val cocktailList: ArrayLis
         return cocktailList.size
     }
 
-    public class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         val titolo: TextView = itemView.findViewById(R.id.post_title)
         val autore: TextView = itemView.findViewById(R.id.post_byuser)

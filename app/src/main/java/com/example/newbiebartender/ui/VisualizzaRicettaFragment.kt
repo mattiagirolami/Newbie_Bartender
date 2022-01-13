@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.newbiebartender.ListaVisualizzazioneFragment
@@ -96,7 +98,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     var ingreds = ""
                     if (arrayIngr != null){
                         for (ing in arrayIngr) {
-                            ingreds = ingreds+ing+"\n"
+                            ingreds = ingreds+ing.capitalize()+"\n"
                         }
                     }
                     binding.ingredienti.text = ingreds
@@ -114,6 +116,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                             .setOnMenuItemClickListener {
                                 removeFav()
                                 Toast.makeText(requireContext(), "Rimosso dai preferiti", Toast.LENGTH_SHORT).show()
+                                var bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
+                                binding.root.findNavController().navigate(R.id.action_visualizzaRicettaCocktail_frag_self, bundle)
                                 true
                             }
                     } else {
@@ -123,6 +127,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                             .setOnMenuItemClickListener {
                                 addToFav()
                                 Toast.makeText(requireContext(), "Aggiunto ai preferiti", Toast.LENGTH_SHORT).show()
+                                var bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
+                                binding.root.findNavController().navigate(R.id.action_visualizzaRicettaCocktail_frag_self, bundle)
                                 true
                             }
                     }
@@ -145,13 +151,15 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             val mPacca: MutableMap<String, Any?> = HashMap()
             mPacca["email"] = auth.email.toString()
             mPacca["voto"] = valutazione
-            //.collection(tipoCocktail!!)
             FirebaseFirestore.getInstance().collection("cocktail")
                 .document(idRicetta!!)
                 .update("valutazioni", FieldValue.arrayUnion(mPacca))
             Toast.makeText(context, "Hai inserito una valutazione di $valutazione/5", Toast.LENGTH_SHORT).show()
 
             calculateAvg(documentSnapshot)
+
+            var bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
+            binding.root.findNavController().navigate(R.id.action_visualizzaRicettaCocktail_frag_self, bundle)
         }
 
         return view
@@ -160,7 +168,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     private fun setupToolbarWithNavigation() {
         val toolbar = binding.showRecipeToolbar
         toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            val bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
+            findNavController().navigate(R.id.action_visualizzaRicettaCocktail_frag_to_listaVisualizzazione_frag, bundle)
         }
     }
 

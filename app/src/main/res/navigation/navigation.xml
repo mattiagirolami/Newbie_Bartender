@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@+id/navigation_homepage">
+    app:startDestination="@+id/navigation_stats">
 
     <fragment
         android:id="@+id/navigation_stats"
         android:name="com.example.newbiebartender.StatsFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_navigation_stats_to_visualizzaRicettaCocktail_frag"
+            app:destination="@id/visualizzaRicettaCocktail_frag" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_homepage"
@@ -46,6 +50,9 @@
         <action
             android:id="@+id/action_listaVisualizzazione_frag_to_visualizzaRicettaCocktail_frag"
             app:destination="@id/visualizzaRicettaCocktail_frag" />
+        <action
+            android:id="@+id/action_listaVisualizzazione_frag_to_navigation_homepage"
+            app:destination="@id/navigation_homepage" />
     </fragment>
 
     <fragment
@@ -53,6 +60,12 @@
         android:name="com.example.newbiebartender.ui.VisualizzaRicettaFragment"
         android:label="Ricetta"
         tools:layout="@layout/fragment_visualizza_ricetta">
+        <action
+            android:id="@+id/action_visualizzaRicettaCocktail_frag_self"
+            app:destination="@id/visualizzaRicettaCocktail_frag" />
+        <action
+            android:id="@+id/action_visualizzaRicettaCocktail_frag_to_listaVisualizzazione_frag"
+            app:destination="@id/listaVisualizzazione_frag" />
     </fragment>
 
     <fragment

@@ -21,13 +21,20 @@ class HomePageFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
 
-
+        // Cliccando sulla card relativa ai cocktail analcolici, si viene indirizzati
+        // al fragment dedito alla visualizzazione della lista dei cocktail della categoria scelta
         binding.analcolicoCard.setOnClickListener {
+
+            // Creo un bundle da passare come attributo al metodo navigate() per poter recuperare
+            // la tipologia del cocktail scelto nel fragment di destinazione.
+            // Questa sarà indispensabile per eseguire la query di ricerca sul database
             val bundle = bundleOf("tipoCocktail" to analcolico)
             binding.root.findNavController().navigate(R.id.action_navigation_homepage_to_listaVisualizzazione_frag, bundle)
 
         }
 
+        // Cliccando sulla card relativa ai cocktail alcolici, si viene indirizzati
+        // al fragment dedito alla visualizzazione della lista dei cocktail della categoria scelta
         binding.alcoliciCard.setOnClickListener {
             val bundle = bundleOf("tipoCocktail" to alcolico)
             binding.root.findNavController().navigate(R.id.action_navigation_homepage_to_listaVisualizzazione_frag, bundle)

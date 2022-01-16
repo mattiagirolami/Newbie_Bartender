@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 
 class LoginPref {
 
+    //TODO: commentare (?)
     var pref: SharedPreferences
     var editor: SharedPreferences.Editor
     var con: Context

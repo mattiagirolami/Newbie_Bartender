@@ -1,7 +1,6 @@
 package com.example.newbiebartender
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,18 +9,12 @@ import android.view.View
 import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.SearchView.OnQueryTextListener
-import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.databinding.adapters.SearchViewBindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.newbiebartender.databinding.FragmentListaVisualizzazioneBinding
-import com.example.newbiebartender.ui.MyProfileFragment
-import com.example.newbiebartender.ui.VisualizzaRicettaFragment
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -79,18 +72,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
             }
         })
 
-        db!!.collection("cocktail").whereEqualTo("tipoRicetta", tipoCocktail!!)
-                .get().addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        for (doc in task.result!!) {
-                            titolo = doc["titolo"] as String?
-                            id = doc.id
-                            titoli.add(titolo!!)
-                            idL.add(id!!)
-                        }
-                        binding.listview.adapter = listAdapter
-                    }
-                }
+        showFullList()
 
         binding.listview.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             idRecipe = idL[position]
@@ -101,6 +83,26 @@ open class ListaVisualizzazioneFragment : Fragment() {
         return view
     }
 
+    private fun showFullList() {
+
+        db!!.collection("cocktail")
+                .whereEqualTo("tipoRicetta", tipoCocktail!!)
+                .get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        for (doc in task.result!!) {
+                            titolo = doc["titolo"] as String?
+                            id = doc.id
+                            titoli.add(titolo!!)
+                            idL.add(id!!)
+
+                        }
+                        binding.listview.adapter = listAdapter
+                    }
+                }
+
+    }
+
+
     private fun setupToolbarWithNavigation() {
         toolbar = binding.listaToolbar
         toolbar.setNavigationOnClickListener {
@@ -109,7 +111,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
         }
     }
 
-    inner class ListAdapter(var context: Context?) : BaseAdapter(), Filterable {
+    inner class ListAdapter(var context: Context?) : BaseAdapter(), Filterable{
         override fun getCount(): Int {
             return titoli.size
         }
@@ -145,14 +147,16 @@ open class ListaVisualizzazioneFragment : Fragment() {
                         resultsData.addAll(titoli)
                     } else {
                         idResultData.clear()
-                        val searchString: String = constraint.toString().toLowerCase()
+                        val searchString: String = constraint.toString().toLowerCase(Locale.ROOT)
                         for (name in titoli) {
-                            if (name.toLowerCase().contains(searchString)) {
+                            if (name.toLowerCase(Locale.ROOT).contains(searchString)) {
+
                                 if (resultsData.contains(name)) {
                                     if (binding.ricerca.length() == 0) results.values = titoli
                                     resultsData.clear()
                                     break
                                 }
+
                                 resultsData.add(name)
                                 idResultData.add(idL[titoli.indexOf(name)])
                                 results.values = name
@@ -165,7 +169,7 @@ open class ListaVisualizzazioneFragment : Fragment() {
                 }
 
                 override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                    listaFiltrata = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, resultsData)
+                    listaFiltrata = ArrayAdapter(requireContext(), R.layout.text_view_item, resultsData)
                     binding.listview.adapter = listaFiltrata
                     listaFiltrata!!.notifyDataSetChanged()
                     notifyDataSetChanged()

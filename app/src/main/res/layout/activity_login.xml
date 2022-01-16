@@ -93,15 +93,5 @@
         android:text="@string/non_sei_registrato_registrati_ora"
         android:textColor="@color/black"
         android:textSize="15sp"/>
-    <TextView
-        android:id="@+id/forgotten_pw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password dimenticata?"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:layout_marginTop="10dp"
-        />
 
 </LinearLayout>

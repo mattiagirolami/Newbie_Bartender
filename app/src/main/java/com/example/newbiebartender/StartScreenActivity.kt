@@ -15,12 +15,17 @@ class StartScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start_screen)
 
         logo = findViewById(R.id.imageView_startScreen)
+
+        // Viene eseguita una semplice animazione all'avvio dell'app,
+        // facendo ruotare il logo dell'app di 360 gradi
         logo!!.animate().apply {
             duration = 1400
             rotationYBy(360f)
             rotationY(360f)
         }.start()
 
+        // Terminata l'animazione, si viene mandati all' Activity di Login nel caso in cui non avessimo effettuato il login,
+        // altiemnti si viene mandati all' homepage
         Handler().postDelayed({
             val intent = Intent(this@StartScreenActivity, LoginActivity::class.java)
             startActivity(intent)

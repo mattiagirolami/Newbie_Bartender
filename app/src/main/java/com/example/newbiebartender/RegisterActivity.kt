@@ -22,18 +22,26 @@ class RegisterActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        // Creo due variabili che contengono rispettivamente l'istanza dell'utente su Firebase
+        // e l'istanza del database Firebase Firestore
         val mAuth = FirebaseAuth.getInstance()
         val firebaseFirestore = FirebaseFirestore.getInstance()
 
+        // Cliccando sul button "Registrati" si avvia il processo di registrazione di un nuovo utente
         binding.registerButtonRegister
                 .setOnClickListener(View.OnClickListener {
 
+                    // Vengono prese le informazioni dai vari campi, rimuovendo gli eventuali spazi bianchi
+                    // inseriti erroneamente alla fine di ogni campo
                     val emails = binding.editTextTextEmailAddress.text.toString().trim { it <= ' ' }
                     val passwords = binding.editTextTextPassword.text.toString().trim { it <= ' ' }
                     val ripetipasswords = binding.editTextTextPasswordConfirm.text.toString().trim { it <= ' ' }
                     val usernames = binding.editTextTextUser.text.toString()
 
 
+                    // Vengono eseguiti i vari controlli sui campi:
+                    // campi vuoti, lunghezza della password non sufficiente e password ripetuta che non
+                    // corrisponde con la prima
                     if (TextUtils.isEmpty(usernames)) {
                         if (TextUtils.isEmpty(emails)) {
                             if (TextUtils.isEmpty(passwords)) {
@@ -59,21 +67,12 @@ class RegisterActivity : AppCompatActivity() {
                     binding.registerButtonRegister.visibility = View.INVISIBLE
                     binding.backToLoginTextView.visibility = View.INVISIBLE
 
-
-                    /*firebaseFirestore.collection("users")
-                            .get()
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    for (document in task.result!!) {
-                                        if (usernames == document["username"].toString()) binding.editTextTextUsernameLayout.error = "Nome utente esistente."
-                                        return@addOnCompleteListener
-                                    }
-                                }
-                            }
-                     */
-
+                    // Viene creato l'utente su Firebase
                     mAuth.createUserWithEmailAndPassword(emails, passwords).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+
+                            // Se la creazione va a buon fine, viene inserito l'username dell'utente all'interno della
+                            // collection "username" su Firestore
                             val user: MutableMap<String, Any> = HashMap()
                             user["username"] = usernames
                             firebaseFirestore.collection("users")
@@ -81,20 +80,22 @@ class RegisterActivity : AppCompatActivity() {
                                     .set(user)
                                     .addOnSuccessListener { Toast.makeText(this, "Utente creato", Toast.LENGTH_SHORT).show() }
                                     .addOnFailureListener { e -> Log.d("Message2", "OnFailure :$e") }
+
+                            //Una volta avvenuta la registrazione, si deve effettuare il login
                             startActivity(Intent(applicationContext, LoginActivity::class.java))
+
                         } else {
+                            // Se si è verificato qualche errore, viene mostrato un Toast
                             Toast.makeText(this, "Impossibile creare l'utente", Toast.LENGTH_SHORT).show()
+                            //TODO: togliere
                             binding.registerButtonRegister.visibility = View.VISIBLE
                             binding.backToLoginTextView.visibility = View.VISIBLE
                         }
                     }
                 })
+
+        // Se si vuole tornare all'activity di Login si può cliccare sulla stringa "Sei già registrato? Torna al login"
         binding.backToLoginTextView.setOnClickListener { startActivity(Intent(applicationContext, LoginActivity::class.java)) }
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
 
 }

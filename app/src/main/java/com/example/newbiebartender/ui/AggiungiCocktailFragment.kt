@@ -90,7 +90,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         var ingredienti: ArrayList<String> = arrayListOf()
         var editorIngredienti = binding.ingrediente
         binding.buttonAggiugniIng.setOnClickListener { view ->
-            var append = editorIngredienti.text.toString()
+            var append = editorIngredienti.text.toString().toLowerCase()
             ingredienti.add(append)
             editorIngredienti.text.clear()
             Toast.makeText(context, "Hai aggiunto: $append", Toast.LENGTH_SHORT).show()
@@ -191,11 +191,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         }
     }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) { }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?) { }
 
 }

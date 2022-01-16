@@ -49,6 +49,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        // Verifico tramite il meccanismo delle session se l'utente ha effettuato il login
         session = LoginPref(this.requireContext())
         session.checkLogin()
 
@@ -59,6 +60,8 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         
         val tool_log = binding.toolbarProfile.menu.getItem(0)
 
+        // Mi collego alla collection "users" di Firestore per recuperare l'email e l'username dell'utente loggato,
+        // che verranno poi mostrati nel fragment dedicato al profilo
         db!!.collection("users")
             .get()
             .addOnCompleteListener { task ->
@@ -67,8 +70,15 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                         val user = FirebaseAuth.getInstance().currentUser
                         if (user!!.email == document.id) {
                             id = document.id
+
+                            // Il document.id corrisponde all'email dell'utente
                             binding.email.text = document.id
                             binding.nomeutente.text = document["username"].toString()
+
+                            // Utilizzo Firebase Storage per immagazzinare le immagini
+                            // Qui vado a recuperare l'immagine del profilo dell'utente e la inserisco
+                            // nell'image view. Utilizzo anche la libreria Glide per effetuare il caricamento dell'immagine in modo molto semplice
+                            // TODO: aggiungere onFailure con immagine di default
                             storageReference!!.child("images/$id.jpg").downloadUrl
                                 .addOnSuccessListener { uri ->
                                     val imageUrl = uri.toString()
@@ -81,8 +91,10 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                 }
             }
 
+        // Listener che si aziona se clicco sul pulsante per effettuare il logout, posizionato sulla toolbar
         tool_log!!.setOnMenuItemClickListener {
             val mAuth = FirebaseAuth.getInstance()
+            // Effettuo il logout tramite la funzione di Firebase Auth e tramite la session
             mAuth.signOut()
             session.logoutUser()
             startActivity(Intent(context, LoginActivity::class.java))
@@ -90,32 +102,47 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
             true
         }
 
+        // Se clicco sull'icona per cambiare l'immagine viene eseguita la funzione cambiaImmagine()
         binding.bottonemodifica.setOnClickListener { cambiaImmagine() }
 
+        // Se clicco sull'icona per scattare la foto viene eseguita la funzione chiediPermessiFotocamera()
         binding.scattafoto.setOnClickListener { chiediPermessiFotocamera() }
 
+        // Se clicco sul button "Preferiti" vengo mandato nel fragment dedicato alla visualizzazione dei preferiti
         binding.gotoFavourites.setOnClickListener{
             binding.root.findNavController()
                     .navigate(R.id.action_navigation_profile_to_favouriteCocktailFragment_)
 
         }
 
+
+        // Se clicco sul button Modifica Password, viene creata una Dialog in cui posso inserire la nuova password
         binding.modificaPassword.setOnClickListener { v ->
+
             val resetPassword = EditText(v.context)
             val passwordreset = AlertDialog.Builder(v.context)
+
             passwordreset.setTitle("MODIFICA PASSWORD")
             passwordreset.setMessage("Inserisci la nuova password: ")
             passwordreset.setView(resetPassword)
+
             passwordreset.setPositiveButton("SALVA") { dialog, which ->
+
                 val user = FirebaseAuth.getInstance().currentUser
                 val psw = resetPassword.text.toString()
+
+                //utilizzo il metodo updatePassword di Firebase Auth per aggiornare la password dell'utente
                 user!!.updatePassword(psw).addOnSuccessListener {
                     Toast.makeText(context,"Password modificata correttamente.",Toast.LENGTH_SHORT).show()
+
                 }.addOnFailureListener {
+
+                    // Se l'aggiornamento della password non dovesse andare a buon fine, viene effettuato il logout e
+                    // si torna alla schermata di Login
                     val mAuth = FirebaseAuth.getInstance()
                     Toast.makeText(context, "Password non modificata.", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(context,"Effettua nuovamente il login e riprova.",Toast.LENGTH_SHORT).show()
                     mAuth.signOut()
+                    session.logoutUser()
                     startActivity(Intent(context, LoginActivity::class.java))
                 }
             }
@@ -124,6 +151,8 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         return view
     }
 
+    // Funzione che verifica se ci sono i permessi per aprire la fotocamera.
+    // Se i permessi non sono presenti vengono richiesti all'utente e viene successivamente eseguita la funzione apriFotocamera()
     private fun chiediPermessiFotocamera() {
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((context as Activity?)!!, arrayOf(android.Manifest.permission.CAMERA), 100)
@@ -132,6 +161,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         }
     }
 
+    // Se ci sono i permessi viene aperta la fotocamera
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == CAMERA_PERM_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -142,11 +172,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         }
     }
 
+    // Funzione che apre la fotocamera
     private fun apriFotocamera() {
         val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(camera, CAMERA_PERM_CODE)
     }
 
+    // Funzione che cambia l'immagine del profilo dell'utente
     private fun cambiaImmagine() {
         val intent = Intent()
         intent.type = "image/*"
@@ -172,6 +204,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         }
     }
 
+    // Funzione che carica l'immagine del profilo dell'utente su Firebase Storage, utilizzando il formato .jpg
     private fun uploadImageToFirebase(image: Bitmap?) {
         var images = image
         val imageReference = storageReference!!.child("images/$id.jpg")
@@ -188,6 +221,7 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
             }
     }
 
+    // Funzione che carica l'immagine presa dallo Storage all'interno dell'ImageView
     private fun caricaImmagine() {
         val pd = ProgressDialog(context)
         pd.setTitle("Caricamento immagine...")

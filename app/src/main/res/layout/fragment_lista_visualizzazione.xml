@@ -31,7 +31,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
         android:inputType="text"
-        android:hint="Ricerca..."
+        android:hint="Cerca un cocktail..."
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:drawablePadding="10dp"

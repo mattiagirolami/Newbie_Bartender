@@ -3,6 +3,7 @@ package com.example.newbiebartender
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -13,6 +14,7 @@ class Navigation : AppCompatActivity () {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.navigazione_inapp)
 
+        // Viene settata la bottom nav bar con i relativi componenti
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
         val appBarConfiguration = AppBarConfiguration.Builder(
             R.id.navigation_stats, R.id.navigation_homepage, R.id.navigation_add, R.id.navigation_profile).build()
@@ -21,5 +23,6 @@ class Navigation : AppCompatActivity () {
     }
 
     override fun onBackPressed() {
+
     }
 }

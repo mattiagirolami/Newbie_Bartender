@@ -57,8 +57,10 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
                     }
                 }
 
+        // Eseguo la funzione cambiaImmagine se clicco sull'Image Button per aggiungere la foto
         binding.imgButtonAdd.setOnClickListener { cambiaImmagine() }
 
+        // Recupera la difficoltà selezionata tramite lo spinner
         binding.spinnerDifficolta.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 difficolta = parent.getItemAtPosition(position).toString()
@@ -69,6 +71,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             }
         }
 
+
+        // Recupero la tipologia del cocktail selezionata
         binding.spinnerTipologia.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 tipologia = parent.getItemAtPosition(position).toString()
@@ -82,26 +86,32 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         }
 
 
-        var preferiti: ArrayList<String> = arrayListOf()
+        val preferiti: ArrayList<String> = arrayListOf()
 
-        var valutazioni: ArrayList<Map<String, *>> = ArrayList<Map<String, *>>()
+        val valutazioni: ArrayList<Map<String, *>> = ArrayList<Map<String, *>>()
 
 
-        var ingredienti: ArrayList<String> = arrayListOf()
-        var editorIngredienti = binding.ingrediente
+        // Aggiungo ingredienti e quantità del cocktail, che verrano inseriti all interno di un'ArrayList di String
+        val ingredienti: ArrayList<String> = arrayListOf()
+        val editorIngredienti = binding.ingrediente
+
+        // Cliccando sul button per aggiungere gli ingredienti, quello presente nell'editText verrà
+        // inserito nell'arrayList e l'editText verrà svuotato
         binding.buttonAggiugniIng.setOnClickListener { view ->
-            var append = editorIngredienti.text.toString().toLowerCase()
+            val append = editorIngredienti.text.toString().toLowerCase(Locale.ROOT)
             ingredienti.add(append)
             editorIngredienti.text.clear()
-            Toast.makeText(context, "Hai aggiunto: $append", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Hai aggiunto:  $append", Toast.LENGTH_SHORT).show()
         }
 
+        // Premendo sul button Salva il cocktail verrà salvato all'interno del database
         binding.buttonSalvaRicetta.setOnClickListener(View.OnClickListener {
 
             val titoloString = binding.nomeCocktailEditText.text.toString().trim()
 
             val descrizione = binding.editTextTextMultiline.text.toString().trim()
 
+            // Controllo se i campi non sono vuoti
             if (titoloString.isEmpty()) {
                 if (ingredienti.isEmpty()) {
                     if (descrizione.isEmpty()) {
@@ -113,6 +123,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
                 return@OnClickListener
             }
 
+            // Creo una Map con tutte le informazioni inserite e la carico sul database
             val ricettaMap: MutableMap<String, Any?> = HashMap()
             ricettaMap["id"] = id
             ricettaMap["titolo"] = titoloString
@@ -126,7 +137,6 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
             ricettaMap["mediaValutazioni"] = 0.0
 
             val db = FirebaseFirestore.getInstance()
-
             db.collection("cocktail").document(id).set(ricettaMap).addOnSuccessListener {
                 Toast.makeText(context, "Ricetta salvata correttamente", Toast.LENGTH_LONG).show()
                 val back = Intent(context, Navigation::class.java)
@@ -153,6 +163,7 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         startActivityForResult(intent, 1)
     }
 
+    // Funzione che carica l'immagine su Firebase Storage
     private fun caricaImmagine() {
         val pd = ProgressDialog(context)
         pd.setTitle("Caricamento immagine...")
@@ -179,6 +190,8 @@ class AggiungiCocktailFragment : Fragment(), OnItemSelectedListener {
         fun onFragmentInteraction(backText: String?)
     }
 
+    // Object che contiene una funzione, la quale mi permette di generare una stringa random di
+    // 20 caratteri/numeri
     object GenerateRandomString {
         const val DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         var RANDOM = Random()

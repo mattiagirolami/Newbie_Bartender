@@ -43,10 +43,12 @@ class FavouritesFragment : Fragment() {
 
         binding = FragmentFavouritesBinding.inflate(inflater, container, false)
 
+        // Richiamo la funzione che mi permette di tornare al fragment precedente al click sulla freccia contenuta nella toolbar
         setupTBwithNavigation()
 
         auth = FirebaseAuth.getInstance().currentUser!!
 
+        // Richiamo la funzione che mi mostra la lista dei cocktail aggiunti nei preferiti dall'utente
         showPreferiti()
 
         binding.listviewFavourites.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
@@ -57,6 +59,8 @@ class FavouritesFragment : Fragment() {
         return binding.root
     }
 
+    // Funzione che mi mostra la lista dei cocktail aggiunti nei preferiti dall'utente. La query va a inserire nella lista
+    // dei cocktail preferiti solo quelli per il quale l'email dell'utente è contenuta all'interno del campo "preferiti" nel database.
     private fun showPreferiti() {
 
         db.collection("cocktail").whereArrayContains("preferiti", auth.email!!.toString())
@@ -79,6 +83,7 @@ class FavouritesFragment : Fragment() {
                 }
     }
 
+    // Funzione che mi permette di tornare al fragment precedente al click sulla freccia contenuta nella toolbar
     private fun setupTBwithNavigation() {
         toolbar = binding.toolbarFav
         toolbar.setNavigationOnClickListener {
@@ -86,6 +91,7 @@ class FavouritesFragment : Fragment() {
                 }
     }
 
+    // Adapter per la listView
     inner class ListAdapter (var context: Context?) : BaseAdapter() {
         override fun getCount(): Int {
             return titoli.size

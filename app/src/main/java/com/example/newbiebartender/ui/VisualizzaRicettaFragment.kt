@@ -48,6 +48,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
+
+            // Recupero i parametri passati come parametro nel bundle creato nel fragment che rimanda a questo
             idRicetta = requireArguments().getString("idRicetta")
             tipoCocktail = requireArguments().getString("tipoCocktail")
         }
@@ -62,8 +64,10 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         _binding = FragmentVisualizzaRicettaBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        // Funzione che mi permette di tornare al fragment precedente
         setupToolbarWithNavigation()
 
+        // Listener sullo spinner che mi permette di scegliere la valutazione da dare al cocktail
         binding.spinnerValutazione.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -79,6 +83,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
         docref = db!!.collection("cocktail").document(idRicetta!!)
 
+        // Recupero tutte le informazioni relative al cocktail selezionato e le inserisco all'interno dei loro campi
         docref!!.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
 
@@ -87,7 +92,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 if (document!!.exists()) {
 
                     documentSnapshot = document
+
+                    // Inserisco all'interno del campo Rating la media delle valutazioni del cocktail,
+                    // calcolata tramite la funzione calculateAvg()
                     binding.ratingTofill.text = calculateAvg(document).toString() + " su 5"
+
                     binding.nomeCockTw.text = document["titolo"].toString()
                     binding.difficoltaTofill.text = document["difficoltà"].toString()
                     binding.procedimentoView.text = document["descrizione"].toString().capitalize(Locale.ROOT)
@@ -103,24 +112,38 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                     }
                     binding.ingredienti.text = ingreds
 
+                    // Se il cocktail è stato già valutato dall'utente, esso non potrà valutarlo una seconda volta.
+                    // Le componenti grafiche dedite all'inserimento del rating vengono quindi nascoste ma
+                    // non prima di aver controllato la presenza della recensione da parte di quell'utente sul database (attraverso la funzione checkRatings)
                     if(checkRatings(document)){
                         binding.btnSalvaValutazione.visibility = View.GONE
                         binding.ratingTw.visibility = View.GONE
                         binding.spinnerValutazione.visibility = View.GONE
                     }
 
+                    // Tramite la funzione checkFavourites controllo se l'utente ha inserito o meno il cocktail selezionato nei suoi preferiti
+                    //
+                    // Se il cocktail è presente nei preferiti verrà mostrata una "stella piena" e al click sulla stella stessa
+                    // verrà eseguita la funzione removeFav(), che rimuoverà il cocktail dai preferiti.
+                    // Successivamente viene richiamato il fragment stesso per poter mostrare l' icona aggiornata
                     if (checkFavourite(document)){
                         binding.showRecipeToolbar.menu.getItem(0)
                             .setIcon(R.drawable.ic_full_star)
                         binding.showRecipeToolbar.menu.getItem(0)
                             .setOnMenuItemClickListener {
+
                                 removeFav()
                                 Toast.makeText(requireContext(), "Rimosso dai preferiti", Toast.LENGTH_SHORT).show()
-                                var bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
+                                val bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
                                 binding.root.findNavController().navigate(R.id.action_visualizzaRicettaCocktail_frag_self, bundle)
                                 true
                             }
                     } else {
+
+                        // Se il cocktail non è presente nei preferiti verrà mostrata una "stella vuota" e al click sulla stella stessa
+                        // verrà eseguita la funzione addToFav(), che aggiungerà il cocktail ai preferiti.
+                        // Successivamente viene richiamato il fragment stesso per poter mostrare l' icona aggiornata
+
                         binding.showRecipeToolbar.menu.getItem(0)
                             .setIcon(R.drawable.ic_empty_star)
                         binding.showRecipeToolbar.menu.getItem(0)
@@ -133,6 +156,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                             }
                     }
 
+                    // Carico l'immagine del cocktail nell'ImageView, presa da Firebase Storage
+                    // Se l'immagine del cocktail non è presente nello storage, ne viene inserita una di default
                     storageReference!!.child("$tipoCocktail/$idRicetta.jpg")
                             .downloadUrl
                             .addOnSuccessListener { uri ->
@@ -147,18 +172,22 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             }
         }
 
+        // Cliccando sul tasto Salva, la valutazione inserita verrà caricata all'interno del documento corrispondente al cocktail sul database
+        // Viene inserita nel db la coppia email-voto per poter associare ad ogni valutazione l'user che l'ha inserita
         binding.btnSalvaValutazione.setOnClickListener {
-            val mPacca: MutableMap<String, Any?> = HashMap()
-            mPacca["email"] = auth.email.toString()
-            mPacca["voto"] = valutazione
+            val mVal: MutableMap<String, Any?> = HashMap()
+            mVal["email"] = auth.email.toString()
+            mVal["voto"] = valutazione
             FirebaseFirestore.getInstance().collection("cocktail")
                 .document(idRicetta!!)
-                .update("valutazioni", FieldValue.arrayUnion(mPacca))
+                .update("valutazioni", FieldValue.arrayUnion(mVal))
             Toast.makeText(context, "Hai inserito una valutazione di $valutazione/5", Toast.LENGTH_SHORT).show()
 
+            // Funzione utilizzata per calcolare la media
             calculateAvg(documentSnapshot)
 
-            var bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
+            // Richiamo il fragment stesso per poterlo refreshare e visualizzare la media delle valutazioni aggiornata
+            val bundle = bundleOf("idRicetta" to idRicetta, "tipoCocktail" to tipoCocktail)
             binding.root.findNavController().navigate(R.id.action_visualizzaRicettaCocktail_frag_self, bundle)
         }
 
@@ -173,9 +202,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         }
     }
 
+    // Funzione che recupera tutte le valutazioni relative al cocktail nel database,
+    // le somma e successivamente le divide per il numero delle valutazioni, calcolando la media
     private fun calculateAvg(document: DocumentSnapshot) : Float {
 
-        var somma: Int = 0
+        var somma = 0
         var counter = 0
         var media = 0F
 
@@ -184,9 +215,11 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             counter++
         }
 
+
         media = if(somma == 0) 0F
         else (somma/counter).toFloat()
 
+        // Salvo la media delle valutazioni nel database
         FirebaseFirestore.getInstance().collection("cocktail")
                 .document(idRicetta!!)
                 .update("mediaValutazioni", media)
@@ -195,6 +228,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     }
 
+    // Funzione che controlla se è presente la valutazione dell'utente nel database
     private fun checkRatings(document: DocumentSnapshot) : Boolean {
         for(valutazione in document["valutazioni"] as ArrayList<HashMap<String, String>>){
             if (valutazione["email"] == auth.email.toString()) isRated = true
@@ -202,6 +236,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         return isRated
     }
 
+    // Funzione che controlla se l'utente ha inserito il cocktail nei suoi preferiti
     private fun checkFavourite(document: DocumentSnapshot) : Boolean {
 
         for(favourite in document["preferiti"] as ArrayList<String>) {
@@ -212,6 +247,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
         return isFav
     }
 
+    // Funzione che aggiunge il cocktail nei preferiti,
+    // inserendo l'email dell'utente all'interno del campo (array di String) preferiti nel database
     private fun addToFav() {
 
         isFav = true
@@ -222,6 +259,8 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
 
     }
 
+    // Funzione che rimuove il cocktail dai preferiti,
+    // rimuovendo l'email dell'utente dal campo (array di String) preferiti nel database
     private fun removeFav() {
         isFav = false
 

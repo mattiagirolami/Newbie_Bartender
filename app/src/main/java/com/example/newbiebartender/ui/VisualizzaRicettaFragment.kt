@@ -54,6 +54,7 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
             tipoCocktail = requireArguments().getString("tipoCocktail")
         }
 
+
         auth = FirebaseAuth.getInstance().currentUser!!
     }
 
@@ -270,5 +271,6 @@ class VisualizzaRicettaFragment : ListaVisualizzazioneFragment() {
                 .update("preferiti", FieldValue.arrayRemove(auth.email.toString()))
 
     }
+
 
 }

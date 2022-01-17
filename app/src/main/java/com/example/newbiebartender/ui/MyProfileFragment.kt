@@ -130,25 +130,18 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
             passwordreset.setMessage("Inserisci la nuova password: ")
             passwordreset.setView(resetPassword)
 
+
             passwordreset.setPositiveButton("SALVA") { dialog, which ->
 
                 val user = FirebaseAuth.getInstance().currentUser
                 val psw = resetPassword.text.toString()
 
-                //utilizzo il metodo updatePassword di Firebase Auth per aggiornare la password dell'utente
-                user!!.updatePassword(psw).addOnSuccessListener {
-                    Toast.makeText(context,"Password modificata correttamente.",Toast.LENGTH_SHORT).show()
-
-                }.addOnFailureListener {
-
-                    // Se l'aggiornamento della password non dovesse andare a buon fine, viene effettuato il logout e
-                    // si torna alla schermata di Login
-                    val mAuth = FirebaseAuth.getInstance()
-                    Toast.makeText(context, "Password non modificata.", Toast.LENGTH_SHORT).show()
-                    mAuth.signOut()
-                    session.logoutUser()
-                    startActivity(Intent(context, LoginActivity::class.java))
+                if (psw.length<6) Toast.makeText(context, "Inserisci una password di 6 caratteri/numeri", Toast.LENGTH_LONG).show()
+                else {
+                    user!!.updatePassword(psw)
+                    Toast.makeText(context, "Password modificata", Toast.LENGTH_LONG).show()
                 }
+
             }
             passwordreset.create().show()
         }

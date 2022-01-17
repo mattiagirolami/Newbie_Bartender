@@ -68,8 +68,6 @@ class RegisterActivity : AppCompatActivity() {
                         "La password deve contenere almeno 6 caratteri"
                     return@OnClickListener
                 }
-                binding.registerButtonRegister.visibility = View.INVISIBLE
-                binding.backToLoginTextView.visibility = View.INVISIBLE
 
                 // Viene creato l'utente su Firebase
                 mAuth.createUserWithEmailAndPassword(emails, passwords)
@@ -99,9 +97,7 @@ class RegisterActivity : AppCompatActivity() {
                             // Se si è verificato qualche errore, viene mostrato un Toast
                             Toast.makeText(this, "Impossibile creare l'utente", Toast.LENGTH_SHORT)
                                 .show()
-                            //TODO: togliere
-                            binding.registerButtonRegister.visibility = View.VISIBLE
-                            binding.backToLoginTextView.visibility = View.VISIBLE
+
                         }
                     }
             })

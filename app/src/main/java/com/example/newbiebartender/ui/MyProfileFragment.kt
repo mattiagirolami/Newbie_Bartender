@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.newbiebartender.ui
 
 import android.app.Activity
@@ -78,11 +80,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
                             // Utilizzo Firebase Storage per immagazzinare le immagini
                             // Qui vado a recuperare l'immagine del profilo dell'utente e la inserisco
                             // nell'image view. Utilizzo anche la libreria Glide per effetuare il caricamento dell'immagine in modo molto semplice
-                            // TODO: aggiungere onFailure con immagine di default
                             storageReference!!.child("images/$id.jpg").downloadUrl
                                 .addOnSuccessListener { uri ->
                                     val imageUrl = uri.toString()
                                     context?.let { Glide.with(it).load(imageUrl).into(binding.fotoprofilo) }
+                                }
+                                .addOnFailureListener { uri ->
+                                    context?.let {Glide.with(it).load(R.drawable.standard_propic).into(binding.fotoprofilo)}
                                 }
                         }
                     }
@@ -183,11 +187,13 @@ class MyProfileFragment: Fragment(), AggiungiCocktailFragment.OnFragmentInteract
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
+        @Suppress("DEPRECATION")
         startActivityForResult(intent, 1)
         Toast.makeText(context, "Immagine del profilo modificata", Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             imageUri = data.data
